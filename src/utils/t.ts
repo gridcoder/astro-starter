@@ -68,7 +68,6 @@ export function localizePath(
 	link: string | URL,
 	astroUrl: string | URL,
 ): string {
-	console.log("localizePath", link, astroUrl);
 	const locale = getLocale(astroUrl);
 	let localizedLink = "";
 	if (locale && locale !== defaultLocale) {

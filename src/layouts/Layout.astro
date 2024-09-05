@@ -2,16 +2,11 @@
 import { getLocale } from "astro-i18n-aut"
 import { ViewTransitions } from "astro:transitions"
 import BaseHead from "@components/BaseHead.astro"
-import Navbar from "@components/Navbar_v2.svelte"
-// import Navbar from "@components/Navbar.astro";
+import NavigationContainer from "@src/components/NavigationContainer.astro"
 import Footer from "@components/Footer.astro"
 import { SITE_TITLE, SITE_DESCRIPTION } from "@src/consts"
-import LanguageSelector from "@components/LanguageSelector.astro"
-import ThemeSelector from "@components/ThemeSelector.astro"
-import { localizePath, tFn } from "@utils/t"
 
 const locale = getLocale(Astro.url)
-const url = Astro.url
 
 // replaced dynamically
 const buildDate = new Date(__DATE__)
@@ -32,15 +27,9 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.prop
     <ViewTransitions />
   </head>
 
-  <body>
-    <header
-      class="flex flex-col max-w-screen-xl lg:py-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8 z-10 md:pt-2 relative">
-      <a href={localizePath("/", url)} class="text-lg font-semibold">{SITE_TITLE}</a>
-      <Navbar url={Astro.url} />
-      <ThemeSelector />
-      <LanguageSelector showFlag={false} />
-    </header>
-    <main>
+  <body class="flex flex-col items-center bg-base-100 text-primary m-0 p-0 transition-all duration-300">
+    <NavigationContainer />
+    <main class="pt-20 sm:pt-10 px-10 w-full max-w-5xl">
       <slot />
     </main>
     <Footer {buildDate} />

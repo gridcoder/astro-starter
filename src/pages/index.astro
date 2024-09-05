@@ -3,8 +3,70 @@
 import translations from "@utils/t.ts"
 import Layout from "@layouts/Layout.astro"
 import Container from "@src/components/Container.astro"
+import HeroImage from "@src/components/blog/HeroImage.astro"
 
-const t = translations(Astro.url)
+// const t = translations(Astro.url)
 ---
 
-<Layout />
+<Layout>
+  <div class="flex justify-between">
+    <div class="flex flex-col justify-center">
+      <div class="text-4xl">Astro Svelte StarterKit!</div>
+      <div class="text-xl">Est duis cillum fugiat voluptate ad ullamco dolore.</div>
+    </div>
+    <div class="">
+      <HeroImage
+        class="mb-2 rounded-lg"
+        src="/images/hero_image_transparent.png"
+        alt="hero image"
+        width={600}
+        height="6800}"
+      />
+    </div>
+  </div>
+
+  <div class="py-8">
+    <p class="font-bold mb-6">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+    </p>
+
+    <p class="mb-4"></p>
+
+    <p class="mb-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+    </p>
+
+    <p class="mb-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+    </p>
+
+    <p class="mb-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+    </p>
+
+    <p class="mb-4 font-semibold">Lorem ipsum dolor sit amet:</p>
+    <ul class="list-disc pl-8 mb-4 space-y-2">
+      <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+      <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+      <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+      <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+      <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+    </ul>
+
+    <p class="mb-4">Lorem ipsum dolor sit amet.</p>
+
+    <p class="mb-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+    </p>
+
+    <p class="mb-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+    </p>
+  </div>
+</Layout>

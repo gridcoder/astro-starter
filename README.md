@@ -1,4 +1,4 @@
-<h1 align="center"> Astro Starter Kit</h1>
+<h1 align="center"> Astro Svelte StarterKit</h1>
 
 <br />
 

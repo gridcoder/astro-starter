@@ -1,7 +1,8 @@
 <script>
   import { onMount } from "svelte"
-  import { PAGES, SITE_TITLE } from "@src/consts"
+  import { PAGES, SITE_TITLE, DEFAULT_LOCALE } from "@src/consts"
   import { localizePath, tFn } from "@utils/t"
+  import { getLocale, getUrlWithoutLocale } from "astro-i18n-aut"
 
   export let url
 
@@ -25,16 +26,9 @@
     return () => window.removeEventListener("resize", handleResize)
   })
 
-  // HeaderLink functionality
-  function getLocaleUrlPrefix(url) {
-    // Implement the logic to get locale URL prefix
-    // This is a placeholder and should be replaced with actual implementation
-    return ""
-  }
-
   function HeaderLink(href) {
-    const localeUrlPrefix = getLocaleUrlPrefix(url)
-    const fullHref = `${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
+    const localeUrlPrefix = getLocale(url) === DEFAULT_LOCALE ? "" : getLocale(url)
+    const fullHref = `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
     const isActive = fullHref === url.pathname || fullHref === url.pathname.replace(/\/$/, "")
 
     return {
@@ -51,7 +45,7 @@
 
   {#if isMenuOpen || !isMobile}
     <nav class="mt-4 md:mt-0">
-      <ul class="flex flex-col md:flex-row md:items-center gap-4">
+      <ul class="flex flex-col md:flex-row md:items-center gap-4 md:gap-10">
         {#each PAGES as item}
           <li>
             {#if item.children && item.children.length}

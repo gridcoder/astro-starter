@@ -1,6 +1,11 @@
 {
 	"home": "Home",
-	"about": "Over Corpgov",
+	"menu": "Menu",
+	"about": "Over Astro Svelte StarterKit",
 	"blog": "Blog",
-	"footer": "Alle rechten voorbehouden. Gebouwd op"
+	"nav-mobile-menu": "MENU",
+	"footer": "Alle rechten voorbehouden. Gebouwd op",
+	"404": "Pagina niet gevonden",
+	"404-message": "De pagina die u zoekt, is niet gevonden.",
+	"404-back": "Terug naar de homepagina"
 }
