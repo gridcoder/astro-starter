@@ -15,7 +15,7 @@
 		"*"
 	],
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "astro dev --host",
 		"start": "astro dev",
 		"build": "npm run pwa:generate-assets && astro build",
 		"preview": "astro preview",
@@ -43,6 +43,7 @@
 		"@vite-pwa/assets-generator": "^0.2.4",
 		"astro-icon": "^1.1.0",
 		"astro-seo": "^0.8.4",
+		"daisyui": "^4.12.10",
 		"sharp": "0.33.4"
 	},
 	"overrides": {

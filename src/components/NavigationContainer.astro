@@ -1,0 +1,25 @@
+---
+import Navigation from "@src/components/Navigation_v5.svelte"
+import ThemeSelector from "@components/ThemeSelector_v5.svelte"
+import LanguageSelector from "@components/LanguageSelector_v3.svelte"
+import { localizePath } from "@utils/t"
+import { SITE_TITLE, PAGES } from "@src/consts"
+
+const url = Astro.url
+---
+
+<div class="max-w-screen-lg fixed z-20 flex items-center justify-between w-full px-4 py-2 bg-base-100">
+  <div class="">
+    <a href={localizePath("/", url)} class="text-lg font-semibold">{SITE_TITLE}</a>
+  </div>
+  <div class="">
+    <div class="flex flex-row items-center gap-5">
+      <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
+        <div class="flex gap-2">
+          <LanguageSelector client:load />
+          <ThemeSelector client:load />
+        </div>
+      </Navigation>
+    </div>
+  </div>
+</div>
