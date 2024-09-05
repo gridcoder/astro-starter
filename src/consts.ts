@@ -2,9 +2,9 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 // Website metadata
-export const SITE_URL: string = "https://thecodegrid.com";
-export const SITE_TITLE: string = "Astro Svelte StarterKit";
-export const SITE_DESCRIPTION: string = "Welcome to my website!";
+export const SITE_URL: string = "https://corpgov.aw";
+export const SITE_TITLE: string = "Corpgov.aw";
+export const SITE_DESCRIPTION: string = "Welcome to the corporate covernance website!";
 export const LIGHT_THEME: string = "day";
 export const DARK_THEME: string = "night";
 
@@ -28,16 +28,52 @@ export const PAGES: Page[] = [
 		href: "",
 		children: [
 			{
-				title: "Link 1",
-				href: "/link1",
+				title: "Wetgeving & documenten",
+				href: "/wetgeving-documenten",
 			},
 			{
-				title: "Link 2",
-				href: "/link2",
+				title: "Voor wie geldt de Landsverordening corporate governance?",
+				href: "/landsverordening-corporate-governance",
 			},
 			{
-				title: "Link 3",
-				href: "/link3",
+				title: "Op welke entiteiten is de Code van toepassing?",
+				href: "/code-toepassing",
+			},
+			{
+				title: "Implementatie van de Code",
+				href: "/implementatie-code",
+			},
+			{
+				title: "Modellen en templates",
+				href: "/modellen-templates",
+			},
+			{
+				title: "Best practices en praktijkvoorbeelden",
+				href: "/best-practices",
+			},
+			{
+				title: "E-learning Corporate Governance Code Aruba",
+				href: "/e-learning",
+			},
+			{
+				title: "Opleidingen & trainingen",
+				href: "/opleidingen-trainingen",
+			},
+			{
+				title: "Vacatures RvT/RVC/RvB/besturen",
+				href: "/vacatures",
+			},
+			{
+				title: "Veel gestelde vragen",
+				href: "/faq",
+			},
+			{
+				title: "Autoriteit Corporate Governance",
+				href: "/autoriteit",
+			},
+			{
+				title: "Contact",
+				href: "/contact",
 			},
 		],
 	},
@@ -52,7 +88,7 @@ export const PAGES: Page[] = [
 ];
 
 // i18n
-export const DEFAULT_LOCALE = "en";
+export const DEFAULT_LOCALE = "nl";
 export const LOCALES = {
 	en: "en", // the `defaultLocale` value must present in `locales` keys
 	nl: "nl",
