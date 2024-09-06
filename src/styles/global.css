@@ -17,6 +17,27 @@ html {
 
 body {}
 
+h1 {
+	@apply text-4xl font-bold;
+}
+
+h2 {
+	@apply bg-base-100 text-3xl font-bold;
+	/* @apply sticky top-14 z-30; */
+}
+
+h3 {
+	@apply text-2xl font-bold;
+}
+
+h4 {
+	@apply text-xl font-bold;
+}
+
+h5 {
+	@apply text-lg font-bold;
+}
+
 .btn {
 	@apply text-primary;
 }
