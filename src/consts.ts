@@ -2,7 +2,8 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 // Website metadata
-export const SITE_URL: string = "https://corpgov.aw";
+// export const SITE_URL: string = "https://corpgov.aw";
+export const SITE_URL: string = "https://corpgov.netlify.app";
 export const SITE_TITLE: string = "Corpgov.aw";
 export const SITE_DESCRIPTION: string = "Welcome to the corporate covernance website!";
 export const LIGHT_THEME: string = "day";
