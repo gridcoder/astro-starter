@@ -9,6 +9,9 @@ module.exports = {
 				/** Change here the font family */
 				sans: ["Inter Variable", "Inter", ...defaultTheme.fontFamily.sans],
 			},
+			fontVariant: {
+				'small-caps': 'small-caps',
+			},
 			colors: {
 				/** Override here your primary colors */
 				// primary: {
@@ -51,7 +54,17 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require('daisyui')],
+	plugins: [
+		require('daisyui'),
+		function ({ addUtilities }) {
+			const newUtilities = {
+				'.small-caps': {
+				fontVariant: 'small-caps',
+				},
+			}
+			addUtilities(newUtilities, ['responsive', 'hover'])
+		},
+	],
 	daisyui: {
 		themes: [
 			{
