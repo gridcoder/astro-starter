@@ -7,14 +7,12 @@
   let checked = false
 
   onMount(() => {
-    checked = localStorage.getItem("theme") === DARK_THEME
-    updateTheme()
+    checked = window.themeHandler.getStoredTheme() === DARK_THEME
   })
 
   function updateTheme() {
     const theme = checked ? DARK_THEME : LIGHT_THEME
-    localStorage.setItem("theme", theme)
-    document.documentElement.setAttribute("data-theme", theme)
+    window.themeHandler.setTheme(theme)
   }
 </script>
 
