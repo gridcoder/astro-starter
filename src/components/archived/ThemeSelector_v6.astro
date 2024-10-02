@@ -1,0 +1,148 @@
+---
+import { LIGHT_THEME, DARK_THEME } from "@src/consts"
+
+interface Props {
+  className?: string
+}
+
+const { className = "" } = Astro.props
+---
+
+<label class={`grid cursor-pointer place-items-center ${className}`}>
+  <input
+    id="theme-toggle"
+    type="checkbox"
+    class="toggle theme-controller bg-primary border-primary col-span-2 col-start-1 row-start-1 hover:bg-primary pointer-events-none"
+  />
+  <!-- Sun -->
+  <svg
+    class="stroke-base-100 fill-base-100 dark:stroke-primary dark:fill-primary col-start-1 row-start-1"
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="12" r="5"></circle>
+    <path
+      d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
+    ></path>
+  </svg>
+  <!-- Moon -->
+  <svg
+    class="stroke-primary fill-base-100 col-start-2 row-start-1"
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</label>
+
+<!-- <script>
+  import { LIGHT_THEME, DARK_THEME } from "@src/consts"
+
+  // Run on the client-side
+  if (typeof window !== "undefined" && window.themeHandler) {
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("ThemeSelector_v6.astro")
+      const toggle = document.getElementById("theme-toggle") as HTMLInputElement
+
+      // Set initial state
+      toggle.checked = window.themeHandler.getStoredTheme() === DARK_THEME
+
+      // Add event listener
+      toggle.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement
+        const theme = target.checked ? DARK_THEME : LIGHT_THEME
+        window.themeHandler.setTheme(theme)
+      })
+    })
+  }
+</script> -->
+
+<!-- <script>
+  import { LIGHT_THEME, DARK_THEME } from "@src/consts"
+
+  function initializeThemeToggle() {
+    const toggle = document.getElementById("theme-toggle") as HTMLInputElement | null
+
+    if (!toggle) {
+      console.error("Theme toggle element not found")
+      return
+    }
+
+    if (typeof window === "undefined" || !window.themeHandler) {
+      console.error("window.themeHandler is not available")
+      return
+    }
+
+    try {
+      // Set initial state
+      toggle.checked = window.themeHandler.getStoredTheme() === DARK_THEME
+
+      // Add event listener
+      toggle.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement
+        const theme = target.checked ? DARK_THEME : LIGHT_THEME
+        window.themeHandler.setTheme(theme)
+      })
+    } catch (error) {
+      console.error("Error initializing theme toggle:", error)
+    }
+  }
+
+  // Run on the client-side after the DOM is fully loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeThemeToggle)
+  } else {
+    initializeThemeToggle()
+  }
+</script> -->
+
+<script>
+  import { LIGHT_THEME, DARK_THEME } from "@src/consts"
+
+  function initializeThemeToggle() {
+    const toggle = document.getElementById("theme-toggle") as HTMLInputElement | null
+
+    if (!toggle) {
+      console.error("Theme toggle element not found")
+      return
+    }
+
+    if (typeof window === "undefined" || !window.themeHandler) {
+      console.error("window.themeHandler is not available")
+      return
+    }
+
+    try {
+      // Set initial state
+      toggle.checked = window.themeHandler.getStoredTheme() === DARK_THEME
+
+      // Add event listener
+      toggle.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement
+        const theme = target.checked ? DARK_THEME : LIGHT_THEME
+        window.themeHandler.setTheme(theme)
+      })
+
+      console.log("Theme toggle initialized successfully")
+    } catch (error) {
+      console.error("Error initializing theme toggle:", error)
+    }
+  }
+
+  // Use Astro's client:load directive to ensure the script runs after the component is mounted
+  document.addEventListener("astro:page-load", initializeThemeToggle)
+</script>

@@ -99,7 +99,7 @@
       class="btn btn-outline {isOpen ? 'btn-active' : ''}"
       on:click={() => (isOpen = !isOpen)}
     >
-      {t["nav-mobile-menu"]}
+      <p class="hidden xs:block">{t["nav-mobile-menu"]}</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-5 w-5"

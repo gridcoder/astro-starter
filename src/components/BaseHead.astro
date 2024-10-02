@@ -89,12 +89,25 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = "/blog-place
   }}
 />
 
-{/* https://github.com/saadeghi/theme-change */}
 <script define:vars={{ LIGHT_THEME }}>
-  // ☝️ This script prevent the FART effect.
-  if (localStorage.getItem("theme") === null) {
-    document.documentElement.setAttribute("data-theme", LIGHT_THEME)
-  } else document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"))
-  // "theme" LocalStorage value is set by the package to remember user preference.
-  // The value is checked and applyed before rendering anything.
+  // Set theme on load
+  setTheme(getStoredTheme())
+
+  function getStoredTheme() {
+    return localStorage.getItem("theme") || LIGHT_THEME
+  }
+
+  function setTheme(theme) {
+    localStorage.setItem("theme", theme)
+    document.documentElement.setAttribute("data-theme", theme)
+  }
+
+  // Expose functions to window
+  window.themeHandler = { getStoredTheme, setTheme }
+</script>
+
+<script>
+  document.addEventListener("astro:after-swap", () =>
+    window.themeHandler.setTheme(window.themeHandler.getStoredTheme())
+  )
 </script>
