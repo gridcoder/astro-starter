@@ -7,7 +7,8 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				/** Change here the font family */
-				sans: ["Inter Variable", "Inter", ...defaultTheme.fontFamily.sans],
+				heading: ["Raleway Variable", "Raleway", ...defaultTheme.fontFamily.sans],
+				body: ["Metrophobic", ...defaultTheme.fontFamily.sans],
 			},
 			fontVariant: {
 				'small-caps': 'small-caps',

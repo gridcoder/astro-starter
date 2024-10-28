@@ -16,7 +16,7 @@ const url = Astro.url
     <div class="flex flex-row items-center gap-5">
       <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
         <div class="flex gap-2">
-          <LanguageSelector client:load />
+          <!-- <LanguageSelector client:load /> -->
           <ThemeSelector client:load />
         </div>
       </Navigation>
