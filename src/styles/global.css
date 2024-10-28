@@ -2,7 +2,7 @@
   Place global styles here.
  */
 
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/inter/wght-italic.css';
 
 /* The integration's default injected base.css file */
 @tailwind base;
@@ -18,7 +18,32 @@ html {
 }
 
 body {
-	@apply font-sans;
+	@apply font-body;
+}
+
+h1 {
+	@apply font-heading text-4xl font-bold capitalize;
+}
+
+h2 {
+	@apply font-heading bg-base-100 text-3xl font-light italic;
+	/* @apply sticky top-14 z-30; */
+}
+
+h3 {
+	@apply font-heading text-2xl font-medium;
+}
+
+h4 {
+	@apply font-heading text-xl font-bold;
+}
+
+h5 {
+	@apply font-heading text-lg font-bold;
+}
+
+nav {
+	@apply font-heading;
 }
 
 .btn {

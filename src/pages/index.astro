@@ -9,27 +9,27 @@ import HeroImage from "@src/components/blog/HeroImage.astro"
 ---
 
 <Layout>
-  <div class="flex justify-between">
+  <div class="flex flex-col md:flex-row justify-between">
     <div class="flex flex-col justify-center">
-      <div class="text-4xl">Astro Svelte StarterKit!</div>
-      <div class="text-xl">Est duis cillum fugiat voluptate ad ullamco dolore.</div>
+      <h1 class="text-6xl">Astro Svelte StarterKit!</h1>
+      <h2 class="">Est duis cillum fugiat voluptate ad ullamco dolore.</h2>
     </div>
-    <div class="">
+    <div class="w-full">
       <HeroImage
-        class="mb-2 rounded-lg"
+        class="mb-2 w-full rounded-lg"
         src="/images/hero_image_transparent.png"
         alt="hero image"
-        width={600}
-        height="6800}"
+        width="100%"
+        height="100%"
       />
     </div>
   </div>
 
   <div class="py-8">
-    <p class="font-bold mb-6">
+    <h3 class="font-bold mb-6">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
       dolore magna aliqua.
-    </p>
+    </h3>
 
     <p class="mb-4"></p>
 
