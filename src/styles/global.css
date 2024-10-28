@@ -2,6 +2,8 @@
   Place global styles here.
  */
 
+@import '@fontsource-variable/inter';
+
 /* The integration's default injected base.css file */
 @tailwind base;
 @tailwind components;
@@ -15,7 +17,9 @@ html {
 	scrollbar-gutter: stable;
 }
 
-body {}
+body {
+	@apply font-sans;
+}
 
 .btn {
 	@apply text-primary;
