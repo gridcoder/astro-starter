@@ -9,17 +9,20 @@ const url = Astro.url
 ---
 
 <div
-  class="max-w-screen-lg fixed top-3 md:top-5 z-20 flex items-center justify-between w-11/12 md:w-full p-2 md:px-4 md:py-2 bg-base-100 shadow-md dark:shadow dark:shadow-primary rounded dark:border"
+  class="max-w-screen-lg fixed top-3 md:top-5 z-20 flex items-center justify-between w-11/12 xl:w-full p-2 md:px-4 md:py-2 bg-base-100 shadow-md dark:shadow dark:shadow-primary rounded dark:border"
 >
   <div class="">
     <a href={localizePath("/", url)} class="text-lg font-semibold small-caps">{SITE_TITLE}</a>
   </div>
-  <ThemeSelector client:load />
+  <div class="sm:hidden">
+    <ThemeSelector client:load />
+  </div>
   <div class="">
     <div class="flex flex-row items-center gap-5">
       <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
-        <div class="flex gap-2">
+        <div class="hidden sm:flex gap-2">
           <!-- <LanguageSelector client:load /> -->
+          <ThemeSelector client:load />
         </div>
       </Navigation>
     </div>
