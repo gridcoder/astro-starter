@@ -27,7 +27,7 @@ h1 {
 }
 
 h2 {
-	@apply font-heading bg-base-100 text-3xl font-light italic;
+	@apply font-heading text-3xl font-light text-secondary;
 	/* @apply sticky top-14 z-30; */
 }
 

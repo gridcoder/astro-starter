@@ -72,9 +72,9 @@ module.exports = {
 			{
 				[LIGHT_THEME]: {
 					// "primary": "#a991f7",
-					"primary": "#334155",
-					"secondary": "#f6d860",
-					"accent": "#37cdbe",
+					"primary": "#003f73", // Regal Blue
+					"secondary": "#3e92db", // Celestial Blue
+					"accent": "#f11f44", // Crayola Red
 					"neutral": "#94a3b8",
 					"base-100": "#fafaf9", //stone-50
 				},
@@ -83,7 +83,7 @@ module.exports = {
 					"secondary": "#f6d860",
 					"accent": "#37cdbe",
 					"neutral": "#94a3b8",
-					"base-100": "#282524", //stone-800
+					"base-100": "#003f73", //stone-800
 				},
 			},
 			"nord"
