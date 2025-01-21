@@ -3,6 +3,7 @@
  */
 
 @import '@fontsource-variable/raleway/wght-italic.css';
+@import "@fontsource-variable/raleway";
 @import '@fontsource/metrophobic';
 
 /* The integration's default injected base.css file */
@@ -23,7 +24,7 @@ body {
 }
 
 h1 {
-	@apply font-heading text-4xl font-bold capitalize;
+	@apply font-heading text-4xl font-bold;
 }
 
 h2 {

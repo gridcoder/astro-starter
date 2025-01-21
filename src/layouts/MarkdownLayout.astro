@@ -21,7 +21,7 @@ const { frontmatter } = Astro.props
         )
       } -->
     </div>
-    <div class="prose mx-auto max-w-screen-md space-y-4 px-4">
+    <div id="markdown-content" class="prose mx-auto max-w-screen-md space-y-4 pt-10 px-4">
       <div class="">
         <h1>{frontmatter.title}</h1>
         <!-- <hr /> -->
@@ -30,3 +30,13 @@ const { frontmatter } = Astro.props
     </div>
   </article>
 </Layout>
+
+<style>
+  :global(#markdown-content > h2) {
+    @apply pt-20 font-semibold;
+  }
+
+  html {
+    @apply scroll-pt-20 lg:scroll-pt-5;
+  }
+</style>
