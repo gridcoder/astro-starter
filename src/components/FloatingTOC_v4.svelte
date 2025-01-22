@@ -4,42 +4,7 @@
   import { cubicOut } from "svelte/easing"
   import { ChevronDown } from "lucide-svelte"
 
-  const sections = [
-    {
-      title: "Introductie",
-      id: "introductie",
-      items: []
-    },
-    {
-      title: "De landsverordening corporate governance (landsverordening)",
-      id: "de-landsverordening-corporate-governance-landsverordening",
-      items: [
-        {
-          title: "Zorgplicht",
-          id: "zorgplicht"
-        },
-        {
-          title: "Meldingsplicht",
-          id: "meldingsplicht"
-        }
-      ]
-    },
-    {
-      title: "De code corporate governance (code)",
-      id: "de-code-corporate-governance-code",
-      items: []
-    },
-    {
-      title: "Publiekrechtelijke rechtspersonen",
-      id: "publiekrechtelijke-rechtspersonen",
-      items: []
-    },
-    {
-      title: "Overheidsvennootschappen",
-      id: "overheidsvennootschappen",
-      items: []
-    }
-  ]
+  export let toc
 
   let isFloating = false
   let isVisible = false
@@ -47,8 +12,8 @@
   let tocElement
   let observer
   let windowWidth
-  let activeSection = sections[0]?.id || null
-  let activeItem = sections[0]?.items[0]?.id || null
+  let activeSection = toc[0]?.id || null
+  let activeItem = toc[0]?.items[0]?.id || null
   let debug = false
   let mobileSectionObserver
   let desktopSectionObserver
@@ -58,7 +23,7 @@
   $: currentSectionTitle = getCurrentSectionTitle(activeSection, activeItem)
 
   function getCurrentSectionTitle(sectionId, itemId) {
-    const section = sections.find((s) => s.id === sectionId)
+    const section = toc.find((s) => s.id === sectionId)
     if (!section) return { section: "", item: "" }
 
     // If we have an active item, use that
@@ -125,7 +90,7 @@
             }
             // Handle child items (existing logic)
             else {
-              sections.forEach((s) => {
+              toc.forEach((s) => {
                 const matchingItem = s.items.find((item) => item.id === targetId)
                 if (matchingItem) {
                   activeSection = s.id
@@ -156,7 +121,7 @@
               activeSection = targetSection
               activeItem = null // Don't automatically set first child
             } else {
-              sections.forEach((s) => {
+              toc.forEach((s) => {
                 if (s.items.some((item) => item.id === targetId)) {
                   activeSection = s.id
                   activeItem = targetId
@@ -172,9 +137,9 @@
       }
     )
 
-    // Update how sections and items are observed
+    // Update how section and items are observed
     // Replace the existing section observation code with this:
-    sections.forEach((section) => {
+    toc.forEach((section) => {
       // const sectionEl = document.querySelector(`[data-section="${section.id}"]`)
       const sectionEl = document.getElementById(section.id)
       if (sectionEl) {
@@ -218,20 +183,20 @@
 <!-- Original grid that stays in place -->
 <div class="relative mt-10" bind:this={tocElement}>
   <div class="flex flex-col gap-3">
-    {#each sections as section}
-      <div class="p-4 rounded bg-secondary hover:bg-primary transition-colors duration-200">
-        <a href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
-          <h2 class="text-2xl hover:underline font-heading font-semibold text-base-100">{section.title}</h2>
+    {#each toc as section}
+      <div class="p-4 rounded bg-secondary hover:bg-primary dark:hover:bg-base-100 dark:hover:outline dark:hover:outline-1 transition-colors duration-200">
+        <a class="" href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
+          <h2 class="text-2xl hover:underline font-heading font-semibold text-base-100 dark:text-primary">{section.title}</h2>
         </a>
         <ul class="space-y-1">
           {#each section.items as item}
-            <li class="flex items-start">
-              <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full shrink-0"></span>
+            <li class="flex items-start text-base-100 dark:text-primary">
+              <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full bg-current shrink-0"></span>
               <a
                 href="#{item.id}"
                 class="{activeItem === item.id
                   ? 'underline'
-                  : 'no-underline'} text-base-100 hover:underline transition-colors duration-200 block"
+                  : 'no-underline'} text-base-100 dark:text-primary hover:underline transition-colors duration-200 block"
                 on:click|preventDefault={() => scrollToSection(item.id)}
               >
                 {item.title}
@@ -248,11 +213,11 @@
 {#if isVisible && !isDesktop}
   <div class="relative flex justify-center">
     <div
-      class="fixed top-[85px] lg:top-2 w-11/12 rounded-t lg:max-w-screen-xs bg-secondary text-base-100 shadow-md z-50 cursor-pointer"
+      class="fixed top-[85px] lg:top-2 w-11/12 rounded-t lg:max-w-screen-xs bg-secondary shadow-md z-50 cursor-pointer"
       class:rounded-b={!isMobileMenuOpen && !isTransitioning}
       transition:slide={{ duration: 300 }}
     >
-      <button class="w-full text-left" on:click={toggleMobileMenu}>
+      <button class="w-full text-left text-base-100 dark:text-primary" on:click={toggleMobileMenu}>
         <div class="flex items-center justify-between px-5 py-3">
           <div class="flex-1 truncate flex flex-col">
             <h4 class="font-heading font-semibold">{currentSectionTitle.section}</h4>
@@ -277,14 +242,14 @@
           on:outroend={() => (isTransitioning = false)}
         >
           <div class="max-h-full overflow-y-auto">
-            {#each sections as section}
-              <div class="{activeSection === section.id ? 'bg-primary' : ''} px-5 py-2 hover:bg-primary">
+            {#each toc as section}
+              <div class="{activeSection === section.id ? 'bg-primary dark:bg-base-100 dark:border' : ''} px-5 py-2 hover:bg-primary dark:hover:bg-base-100">
                 <a href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
-                  <h2 class="text-xl text-base-100 font-heading font-semibold hover:underline">
+                  <h2 class="text-xl text-base-100 dark:text-primary font-heading font-semibold hover:underline">
                     {section.title}
                   </h2>
                 </a>
-                <ul class="space-y-1 mt-2 text-base-100">
+                <ul class="space-y-1 mt-2 text-base-100 dark:text-primary">
                   {#each section.items as item}
                     <li class="flex items-start">
                       <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full shrink-0"></span>
@@ -311,24 +276,24 @@
 {#if isVisible && isDesktop}
   <div transition:fly={{ x: 300, duration: 500, easing: cubicOut }} class="fixed top-4 right-4 w-[300px]">
     <div class="grid grid-cols-1 gap-4">
-      {#each sections as section}
+      {#each toc as section}
         <div
           class="{activeSection === section.id
-            ? 'bg-primary'
-            : 'bg-secondary'} p-4 rounded hover:bg-primary transition-colors duration-200"
+            ? 'bg-primary dark:bg-base-100 dark:outline dark:outline-1'
+            : 'bg-secondary'} p-4 rounded hover:bg-primary dark:hover:bg-base-100 dark:hover:outline dark:hover:outline-1"
         >
           <a href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
             <h2
               class="{activeSection === section.id && !activeItem
                 ? 'underline'
-                : 'no-underline'} text-2xl text-base-100 font-heading font-semibold hover:underline"
+                : 'no-underline'} text-2xl text-base-100 dark:text-primary font-heading font-semibold hover:underline"
             >
               {section.title}
             </h2>
           </a>
           <ul class="space-y-1 text-base-100">
             {#each section.items as item}
-              <li class="flex items-start">
+              <li class="flex items-start text-base-100 dark:text-primary">
                 <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full bg-current shrink-0"></span>
                 <a
                   href="#{item.id}"

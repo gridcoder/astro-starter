@@ -80,7 +80,7 @@ module.exports = {
 				},
 				[DARK_THEME]: {
 					"primary": "#fafaf9",
-					"secondary": "#f6d860",
+					"secondary": "#3e92db",
 					"accent": "#37cdbe",
 					"neutral": "#94a3b8",
 					"base-100": "#003f73", //stone-800

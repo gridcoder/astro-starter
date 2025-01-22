@@ -3,9 +3,10 @@ title: OP WELKE ENTITEITEN IS DE NIEUWE GOVERNANCE WETGEVING VAN TOEPASSING?
 layout: ../../layouts/MarkdownLayout.astro
 ---
 
-import FloatingTOC from '../../components/FloatingTOC_v4.svelte';
+import FloatingTOC from '../../components/FloatingTOC_v4.svelte'; import {toc}
+from './toc.js';
 
-<FloatingTOC client:load />
+<FloatingTOC client:load toc={toc}/>
 
 ## Introductie
 
