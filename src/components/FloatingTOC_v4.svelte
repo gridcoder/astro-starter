@@ -213,7 +213,7 @@
 {#if isVisible && !isDesktop}
   <div class="relative flex justify-center">
     <div
-      class="fixed top-[85px] lg:top-2 w-11/12 rounded-t lg:max-w-screen-xs bg-secondary shadow-md z-50 cursor-pointer"
+      class="fixed top-[85px] lg:top-2 w-11/12 rounded-t lg:max-w-screen-xs bg-secondary shadow-md z-15 cursor-pointer"
       class:rounded-b={!isMobileMenuOpen && !isTransitioning}
       transition:slide={{ duration: 300 }}
     >
