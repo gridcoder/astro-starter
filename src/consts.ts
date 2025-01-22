@@ -4,7 +4,8 @@
 // Website metadata
 // export const SITE_URL: string = "https://corpgov.aw";
 export const SITE_URL: string = "https://corpgov.netlify.app";
-export const SITE_TITLE: string = "Corpgov.aw";
+export const SITE_TITLE: string = "corpgov";
+export const SITE_TLD: string = ".aw";
 export const SITE_DESCRIPTION: string = "Welcome to the corporate covernance website!";
 export const LIGHT_THEME: string = "day";
 export const DARK_THEME: string = "night";
@@ -78,10 +79,10 @@ export const PAGES: Page[] = [
 			},
 		],
 	},
-	{
-		title: "blog",
-		href: "/blog",
-	},
+	// {
+	// 	title: "blog",
+	// 	href: "/blog",
+	// },
 	{
 		title: "about",
 		href: "/about",

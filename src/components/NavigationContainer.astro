@@ -3,7 +3,7 @@ import Navigation from "@src/components/Navigation_v5.svelte"
 import ThemeSelector from "@components/ThemeSelector_v7.svelte"
 import LanguageSelector from "@components/LanguageSelector_v3.svelte"
 import { localizePath } from "@utils/t"
-import { SITE_TITLE, PAGES } from "@src/consts"
+import { SITE_TITLE, SITE_TLD, PAGES } from "@src/consts"
 
 const url = Astro.url
 ---
@@ -12,7 +12,9 @@ const url = Astro.url
   class="max-w-screen-lg fixed top-3 md:top-5 z-20 flex items-center justify-between w-11/12 xl:w-full p-2 md:px-4 md:py-2 bg-base-100 shadow-md dark:shadow dark:shadow-primary rounded dark:border"
 >
   <div class="">
-    <a href={localizePath("/", url)} class="text-lg font-heading font-semibold small-caps">{SITE_TITLE}</a>
+    <a href={localizePath("/", url)} class="text-lg font-heading font-semibold"
+      ><span class="uppercase">{SITE_TITLE}</span><span class="small-caps">{SITE_TLD}</span></a
+    >
   </div>
   <div class="sm:hidden">
     <ThemeSelector client:load />
