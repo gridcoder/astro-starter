@@ -275,12 +275,12 @@
 <!-- Desktop floating version -->
 {#if isVisible && isDesktop}
   <div transition:fly={{ x: 300, duration: 500, easing: cubicOut }} class="fixed top-4 right-4 w-[300px]">
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 gap-1">
       {#each toc as section}
         <div
           class="{activeSection === section.id
             ? 'bg-primary dark:bg-base-100 dark:outline dark:outline-1'
-            : 'bg-secondary'} p-4 rounded hover:bg-primary dark:hover:bg-base-100 dark:hover:outline dark:hover:outline-1"
+            : 'bg-secondary'} p-2 rounded hover:bg-primary dark:hover:bg-base-100 dark:hover:outline dark:hover:outline-1"
         >
           <a href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
             <h2
@@ -326,3 +326,9 @@
     isTransitioning: {isTransitioning}
   </div>
 {/if}
+
+<style>
+  h2 {
+    @apply text-base;
+  }
+</style>

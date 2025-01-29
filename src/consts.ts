@@ -29,54 +29,54 @@ export const PAGES: Page[] = [
 		title: "menu",
 		href: "",
 		children: [
-			{
-				title: "Wetgeving & documenten",
-				href: "/wetgeving-documenten",
-			},
-			{
-				title: "Voor wie geldt de Landsverordening corporate governance?",
-				href: "/landsverordening-corporate-governance",
-			},
+			// {
+			// 	title: "Wetgeving & documenten",
+			// 	href: "/wetgeving-documenten",
+			// },
+			// {
+			// 	title: "Voor wie geldt de Landsverordening corporate governance?",
+			// 	href: "/landsverordening-corporate-governance",
+			// },
 			{
 				title: "Op welke entiteiten is de Code van toepassing?",
 				href: "/code-toepassing",
 			},
-			{
-				title: "Implementatie van de Code",
-				href: "/implementatie-code",
-			},
+			// {
+			// 	title: "Implementatie van de Code",
+			// 	href: "/implementatie-code",
+			// },
 			{
 				title: "Modellen en templates",
 				href: "/modellen-templates",
 			},
-			{
-				title: "Best practices en praktijkvoorbeelden",
-				href: "/best-practices",
-			},
-			{
-				title: "E-learning Corporate Governance Code Aruba",
-				href: "/e-learning",
-			},
+			// {
+			// 	title: "Best practices en praktijkvoorbeelden",
+			// 	href: "/best-practices",
+			// },
+			// {
+			// 	title: "E-learning Corporate Governance Code Aruba",
+			// 	href: "/e-learning",
+			// },
 			{
 				title: "Opleidingen & trainingen",
 				href: "/opleidingen-trainingen",
 			},
-			{
-				title: "Vacatures RvT/RVC/RvB/besturen",
-				href: "/vacatures",
-			},
+			// {
+			// 	title: "Vacatures RvT/RVC/RvB/besturen",
+			// 	href: "/vacatures",
+			// },
 			{
 				title: "Veel gestelde vragen",
 				href: "/faq",
 			},
-			{
-				title: "Autoriteit Corporate Governance",
-				href: "/autoriteit",
-			},
-			{
-				title: "Contact",
-				href: "/contact",
-			},
+			// {
+			// 	title: "Autoriteit Corporate Governance",
+			// 	href: "/autoriteit",
+			// },
+			// {
+			// 	title: "Contact",
+			// 	href: "/contact",
+			// },
 		],
 	},
 	// {
