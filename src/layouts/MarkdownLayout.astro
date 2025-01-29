@@ -36,6 +36,18 @@ const { frontmatter } = Astro.props
     @apply pt-20 font-semibold;
   }
 
+  :global(#markdown-content > table) {
+    @apply my-10 mx-5 text-left outline outline-1 rounded overflow-hidden; /* Add spacing between columns and border around the table */
+  }
+
+  :global(#markdown-content > table th, td) {
+    @apply p-2 border-b border-secondary/20; /* Add borders to table cells */
+  }
+
+  :global(#markdown-content > table thead) {
+    @apply p-2 bg-secondary text-base-100;
+  }
+
   html {
     @apply scroll-pt-20 lg:scroll-pt-5;
   }
