@@ -15,11 +15,11 @@ const { buildDate } = Astro.props
 
 <footer class="bg-gradient-to-br p-4 pb-16 pt-16 text-center text-primary">
   &copy; {today.getFullYear()}
-  <span class="uppercase">{SITE_TITLE}</span>{SITE_TLD}
-  <br />
   {t.footer1}
   <br />
   {t.footer2}
+  <br />
+  {t.footer3}
   <FormattedDate date={buildDate} includeTime={true} includePeriod={true} />
 
   <div class="mt-4 flex justify-center space-x-4">

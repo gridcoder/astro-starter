@@ -83,10 +83,10 @@ export const PAGES: Page[] = [
 	// 	title: "blog",
 	// 	href: "/blog",
 	// },
-	{
-		title: "about",
-		href: "/about",
-	},
+	// {
+	// 	title: "about",
+	// 	href: "/about",
+	// },
 ];
 
 // i18n
