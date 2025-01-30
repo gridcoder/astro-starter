@@ -4,7 +4,8 @@
 	"about": "About",
 	"blog": "Blog",
 	"nav-mobile-menu": "MENU",
-	"footer": "All rights reserved. Build on",
+	"footer1": "All rights reserved.",
+	"footer2": "Last update: ",
 	"404": "Page not found",
 	"404-message": "The page you are looking for is not found.",
 	"404-back": "Back to the home page"
