@@ -10,279 +10,110 @@
   let isVisible = false
   let isMobileMenuOpen = false
   let tocElement
-  let observer
   let windowWidth
   let activeSection = toc[0]?.id || null
   let activeItem = toc[0]?.items[0]?.id || null
-  let debug = false
-  let mobileSectionObserver
-  let desktopSectionObserver
   let isTransitioning = false
-  let desktopScrollUpObserver
-  let desktopScrollDownObserver
-  let contentObserver
-
-  let lastScrollY = 0
-  let scrollDirection = "down"
+  let debug = false
 
   $: isDesktop = windowWidth >= 1600
-  $: currentSectionTitle = getCurrentSectionTitle(activeSection, activeItem)
+  $: currentSectionTitle = {
+    section: toc.find(s => s.id === activeSection)?.title || "",
+    item: toc.find(s => s.id === activeSection)?.items.find(i => i.id === activeItem)?.title || ""
+  }
 
-  function getCurrentSectionTitle(sectionId, itemId) {
-    const section = toc.find((s) => s.id === sectionId)
-    if (!section) return { section: "", item: "" }
+  function createSectionObserver(options, callback) {
+    return new IntersectionObserver(callback, options)
+  }
 
-    // If we have an active item, use that
-    if (itemId) {
-      const item = section.items.find((i) => i.id === itemId)
-      return {
-        section: section.title,
-        item: item ? item.title : ""
-      }
-    }
+  function handleSectionIntersection(entry, isDesktopView) {
+    if (!entry.isIntersecting) return
 
-    // Just return section title if no active item
-    return {
-      section: section.title,
-      item: ""
+    const targetId = entry.target.id
+    const targetSection = entry.target.getAttribute("data-section")
+
+    if (targetSection) {
+      activeSection = targetSection
+      activeItem = null
+    } else {
+      toc.forEach(section => {
+        if (section.items.some(item => item.id === targetId)) {
+          activeSection = section.id
+          activeItem = targetId
+        }
+      })
     }
   }
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
+  function scrollToSection(id) {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
     isMobileMenuOpen = false
   }
 
-  const toggleMobileMenu = () => {
+  function toggleMobileMenu() {
     isMobileMenuOpen = !isMobileMenuOpen
   }
 
-  function handleScroll() {
-    const currentY = window.scrollY
-    scrollDirection = currentY > lastScrollY ? "down" : "up"
-    console.log("Scroll direction:", scrollDirection)
-    lastScrollY = currentY
-  }
-
-  onMount(() => {
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll)
-
-    // Observer for floating behavior
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+  function setupObservers() {
+    const floatingObserver = createSectionObserver(
+      { threshold: 0, rootMargin: "-100px 0px 0px 0px" },
+      entries => {
+        entries.forEach(entry => {
           isFloating = !entry.isIntersecting
           isVisible = !entry.isIntersecting && entry.boundingClientRect.top < 0
         })
-      },
-      {
-        threshold: 0,
-        rootMargin: "-100px 0px 0px 0px"
       }
     )
+
+    const mobileOptions = { threshold: [0], rootMargin: "-50px 0px -65% 0px" }
+    const desktopOptions = { threshold: [0], rootMargin: "-10% 0px -85% 0px" }
+
+    const mobileObserver = createSectionObserver(
+      mobileOptions,
+      entries => !isDesktop && entries.forEach(entry => handleSectionIntersection(entry, false))
+    )
+
+    const desktopObserver = createSectionObserver(
+      desktopOptions,
+      entries => isDesktop && entries.forEach(entry => handleSectionIntersection(entry, true))
+    )
+
+    return { floatingObserver, mobileObserver, desktopObserver }
+  }
+
+  onMount(() => {
+    const { floatingObserver, mobileObserver, desktopObserver } = setupObservers()
 
     if (tocElement) {
-      observer.observe(tocElement)
+      floatingObserver.observe(tocElement)
     }
 
-    // Mobile section observer
-    mobileSectionObserver = new IntersectionObserver(
-      (entries) => {
-        if (isDesktop) return // Skip if in desktop mode
-
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const targetId = entry.target.id
-            const targetSection = entry.target.getAttribute("data-section")
-
-            // Handle parent section
-            if (targetSection) {
-              activeSection = targetSection
-              activeItem = null // Don't automatically set first child
-            }
-            // Handle child items (existing logic)
-            else {
-              toc.forEach((s) => {
-                const matchingItem = s.items.find((item) => item.id === targetId)
-                if (matchingItem) {
-                  activeSection = s.id
-                  activeItem = targetId
-                }
-              })
-            }
-          }
-        })
-      },
-      {
-        threshold: [0],
-        rootMargin: "-50px 0px -65% 0px" // 240px = 60 * 4 (assuming 1rem = 4px)
-      }
-    )
-
-    // Desktop scroll DOWN observer (existing behavior)
-    desktopScrollDownObserver = new IntersectionObserver(
-      (entries) => {
-        if (!isDesktop || scrollDirection !== "down") return
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const targetId = entry.target.id
-            const targetSection = entry.target.getAttribute("data-section")
-            if (targetSection) {
-              activeSection = targetSection
-              activeItem = null
-            } else {
-              toc.forEach((s) => {
-                if (s.items.some((item) => item.id === targetId)) {
-                  activeSection = s.id
-                  activeItem = targetId
-                }
-              })
-            }
-          }
-        })
-      },
-      {
-        threshold: [0],
-        rootMargin: "-10% 0px -85% 0px"
-      }
-    )
-
-    // Desktop scroll UP observer (more generous margins)
-    desktopScrollUpObserver = new IntersectionObserver(
-      (entries) => {
-        if (!isDesktop || scrollDirection !== "up") return
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const targetId = entry.target.id
-            const targetSection = entry.target.getAttribute("data-section")
-            if (targetSection) {
-              console.log("targetSection:", targetSection)
-              activeSection = targetSection
-              activeItem = null
-            } else {
-              toc.forEach((s) => {
-                if (s.items.some((item) => item.id === targetId)) {
-                  activeSection = s.id
-                  activeItem = targetId
-                  console.log("activeSection:", activeSection)
-                  console.log("activeItem:", activeItem)
-                }
-              })
-            }
-          }
-        })
-      },
-      {
-        threshold: [0],
-        rootMargin: "-10% 0px -20% 0px" // More generous top margin when scrolling up
-      }
-    )
-
-    // Content observer for detecting when scrolling through content areas
-    contentObserver = new IntersectionObserver(
-      (entries) => {
-        if (!isDesktop || scrollDirection !== "up") return
-        
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Get the header ID this content belongs to
-            const headerId = entry.target.getAttribute('data-header-id')
-            if (!headerId) return
-
-            // Check if it's a section or item
-            const targetSection = entry.target.getAttribute('data-section')
-            if (targetSection) {
-              activeSection = headerId
-              activeItem = null
-            } else {
-              // Find which section this item belongs to
-              toc.forEach((s) => {
-                if (s.items.some((item) => item.id === headerId)) {
-                  activeSection = s.id
-                  activeItem = headerId
-                }
-              })
-            }
-          }
-        })
-      },
-      {
-        threshold: [0],
-        rootMargin: "-20% 0px -75% 0px"
-      }
-    )
-
-    // Update how section and items are observed
-    // Replace the existing section observation code with this:
-    toc.forEach((section) => {
-      // const sectionEl = document.querySelector(`[data-section="${section.id}"]`)
+    toc.forEach(section => {
       const sectionEl = document.getElementById(section.id)
-      console.log("sectionEl:", sectionEl)
       if (sectionEl) {
-        console.log("Found section by ID:", section.id)
         sectionEl.setAttribute("data-section", section.id)
-        mobileSectionObserver.observe(sectionEl)
-        desktopScrollUpObserver.observe(sectionEl)
-        desktopScrollDownObserver.observe(sectionEl)
-
-        // Get the next element after the section header
-        const sectionContent = sectionEl.nextElementSibling
-        if (sectionContent) {
-          sectionContent.setAttribute('data-header-id', section.id)
-          sectionContent.setAttribute('data-section', section.id)
-          contentObserver.observe(sectionContent)
-        }
-      } else {
-        console.warn("Section element not found:", section.id) // Debug
+        mobileObserver.observe(sectionEl)
+        desktopObserver.observe(sectionEl)
       }
 
-      section.items.forEach((item) => {
+      section.items.forEach(item => {
         const itemEl = document.getElementById(item.id)
         if (itemEl) {
-          mobileSectionObserver.observe(itemEl)
-          desktopScrollUpObserver.observe(itemEl)
-          desktopScrollDownObserver.observe(itemEl)
+          mobileObserver.observe(itemEl)
+          desktopObserver.observe(itemEl)
           itemEl.setAttribute("data-item-id", item.id)
           itemEl.setAttribute("data-parent-section", section.id)
-
-          // Get the next element after the item header
-          const itemContent = itemEl.nextElementSibling
-          if (itemContent) {
-            itemContent.setAttribute('data-header-id', item.id)
-            itemContent.setAttribute('data-parent-section', section.id)
-            contentObserver.observe(itemContent)
-          }
         }
       })
     })
 
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-      if (observer) observer.disconnect()
-      if (mobileSectionObserver) mobileSectionObserver.disconnect()
-      if (desktopScrollUpObserver) desktopScrollUpObserver.disconnect()
-      if (desktopScrollDownObserver) desktopScrollDownObserver.disconnect()
-      if (contentObserver) contentObserver.disconnect()
+      [floatingObserver, mobileObserver, desktopObserver].forEach(observer => observer.disconnect())
     }
   })
-
-  // $: getSectionClass = (sectionId) => {
-  //   return activeSection === sectionId ? "border border-accent" : ""
-  // }
-
-  // $: getItemClass = (itemId) => {
-  //   return activeItem === itemId ? "text-accent" : ""
-  // }
 </script>
 
-<svelte:window 
-  bind:innerWidth={windowWidth}
-  on:scroll={handleScroll}
-/>
+<svelte:window bind:innerWidth={windowWidth} />
 
 <!-- Original grid that stays in place -->
 <div id="toc" class="relative mt-10" bind:this={tocElement}>
