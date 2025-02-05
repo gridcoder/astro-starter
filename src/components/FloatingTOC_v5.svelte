@@ -8,7 +8,7 @@
   
   const observerMargins = {
     desktop: { top: 10, bottom: 85 },    // percentages
-    mobile: { top: 15, bottom: 80 }      // percentages
+    mobile: { top: 12, bottom: 78 }      // percentages
   }
 
   let isFloating = false
