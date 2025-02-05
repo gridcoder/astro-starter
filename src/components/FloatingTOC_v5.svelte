@@ -1,10 +1,15 @@
 <script>
-  import { onMount } from "svelte"
+  import { onMount, tick } from "svelte"
   import { fly, slide } from "svelte/transition"
   import { cubicOut } from "svelte/easing"
   import { ChevronDown } from "lucide-svelte"
 
   export let toc
+  
+  const observerMargins = {
+    desktop: { top: 10, bottom: 85 },    // percentages
+    mobile: { top: 15, bottom: 80 }      // percentages
+  }
 
   let isFloating = false
   let isVisible = false
@@ -15,6 +20,7 @@
   let activeItem = toc[0]?.items[0]?.id || null
   let isTransitioning = false
   let debug = false
+  let debugOverlay
 
   $: isDesktop = windowWidth >= 1600
   $: currentSectionTitle = {
@@ -22,20 +28,32 @@
     item: toc.find(s => s.id === activeSection)?.items.find(i => i.id === activeItem)?.title || ""
   }
 
+  $: if (debug && debugOverlay) {
+    const vh = window.innerHeight
+    const margins = isDesktop 
+      ? observerMargins.desktop
+      : observerMargins.mobile
+    
+    debugOverlay.style.top = `${(margins.top / 100) * vh}px`
+    debugOverlay.style.height = `${vh - ((margins.top + margins.bottom) / 100) * vh}px`
+  }
+
   function createSectionObserver(options, callback) {
     return new IntersectionObserver(callback, options)
   }
 
-  function handleSectionIntersection(entry, isDesktopView) {
-    if (!entry.isIntersecting) return
-
+  function handleSectionIntersection(entry) {
     const targetId = entry.target.id
     const targetSection = entry.target.getAttribute("data-section")
+    const targetItem = entry.target.getAttribute("data-item-id")
 
-    if (targetSection) {
+    if (targetItem) {
+      activeSection = entry.target.getAttribute("data-parent-section")
+      activeItem = targetItem
+    } else if (targetSection) {
       activeSection = targetSection
       activeItem = null
-    } else {
+    } else if (targetId) {
       toc.forEach(section => {
         if (section.items.some(item => item.id === targetId)) {
           activeSection = section.id
@@ -65,24 +83,89 @@
       }
     )
 
-    const mobileOptions = { threshold: [0], rootMargin: "-50px 0px -65% 0px" }
-    const desktopOptions = { threshold: [0], rootMargin: "-10% 0px -85% 0px" }
+    const margins = isDesktop ? observerMargins.desktop : observerMargins.mobile
 
-    const mobileObserver = createSectionObserver(
-      mobileOptions,
-      entries => !isDesktop && entries.forEach(entry => handleSectionIntersection(entry, false))
+    const commonOptions = {
+      threshold: [0, 0.1],
+      rootMargin: `-${margins.top}% 0px -${margins.bottom}% 0px`
+    }
+
+    const observer = createSectionObserver(
+      commonOptions,
+      entries => {
+        entries.forEach(entry => {
+          // Only process entries that are at least 10% visible
+          if (entry.intersectionRatio >= 0.1) {
+            handleSectionIntersection(entry)
+          }
+        })
+      }
     )
 
-    const desktopObserver = createSectionObserver(
-      desktopOptions,
-      entries => isDesktop && entries.forEach(entry => handleSectionIntersection(entry, true))
-    )
-
-    return { floatingObserver, mobileObserver, desktopObserver }
+    return { floatingObserver, observer }
   }
 
-  onMount(() => {
-    const { floatingObserver, mobileObserver, desktopObserver } = setupObservers()
+  function findLastContentElement(startEl) {
+    let lastContent = null;
+    let currentEl = startEl.nextElementSibling;
+    
+    // Keep going until we hit the next header or run out of siblings
+    while (currentEl && !currentEl.tagName.match(/^H[1-6]$/)) {
+      lastContent = currentEl;
+      currentEl = currentEl.nextElementSibling;
+    }
+    
+    return lastContent;
+  }
+
+  function checkInitialVisibility() {
+    const vh = window.innerHeight
+    const scrollTop = window.scrollY
+    const offset = vh * (isDesktop ? 0.1 : 0.15)  // Match our detection area margins
+
+    // Find all headers and content
+    const elements = document.querySelectorAll('[data-section], [data-item-id]')
+    let bestMatch = null
+    let bestDistance = Infinity
+
+    elements.forEach(el => {
+      const rect = el.getBoundingClientRect()
+      const absoluteTop = rect.top + scrollTop
+
+      // Consider elements that are both in view and just above the viewport
+      // Calculate distance from our detection area
+      const distance = Math.abs(absoluteTop - (scrollTop + offset))
+      
+      if (distance < bestDistance) {
+        bestMatch = el
+        bestDistance = distance
+      }
+    })
+
+    if (bestMatch) {
+      const targetId = bestMatch.id
+      const targetSection = bestMatch.getAttribute("data-section")
+      const targetItem = bestMatch.getAttribute("data-item-id")
+
+      if (targetItem) {
+        activeSection = bestMatch.getAttribute("data-parent-section")
+        activeItem = targetItem
+      } else if (targetSection) {
+        activeSection = targetSection
+        activeItem = null
+      } else if (targetId) {
+        toc.forEach(section => {
+          if (section.items.some(item => item.id === targetId)) {
+            activeSection = section.id
+            activeItem = targetId
+          }
+        })
+      }
+    }
+  }
+
+  onMount(async () => {
+    const { floatingObserver, observer } = setupObservers()
 
     if (tocElement) {
       floatingObserver.observe(tocElement)
@@ -92,23 +175,40 @@
       const sectionEl = document.getElementById(section.id)
       if (sectionEl) {
         sectionEl.setAttribute("data-section", section.id)
-        mobileObserver.observe(sectionEl)
-        desktopObserver.observe(sectionEl)
+        observer.observe(sectionEl)
+
+        // Observe the last content element before the next header
+        const contentEl = findLastContentElement(sectionEl)
+        if (contentEl) {
+          contentEl.setAttribute("data-content", "true")
+          contentEl.setAttribute("data-section", section.id)
+          observer.observe(contentEl)
+        }
       }
 
       section.items.forEach(item => {
         const itemEl = document.getElementById(item.id)
         if (itemEl) {
-          mobileObserver.observe(itemEl)
-          desktopObserver.observe(itemEl)
+          observer.observe(itemEl)
           itemEl.setAttribute("data-item-id", item.id)
           itemEl.setAttribute("data-parent-section", section.id)
+
+          const contentEl = findLastContentElement(itemEl)
+          if (contentEl) {
+            contentEl.setAttribute("data-content", "true")
+            contentEl.setAttribute("data-item-id", item.id)
+            contentEl.setAttribute("data-parent-section", section.id)
+            observer.observe(contentEl)
+          }
         }
       })
     })
 
+    await tick()
+    checkInitialVisibility()
+
     return () => {
-      [floatingObserver, mobileObserver, desktopObserver].forEach(observer => observer.disconnect())
+      [floatingObserver, observer].forEach(obs => obs.disconnect())
     }
   })
 </script>
@@ -255,10 +355,20 @@
 {/if} -->
 
 {#if debug}
-  <div class="fixed bottom-4 right-4 bg-black text-white p-2 rounded">
+  <div class="fixed bottom-4 right-4 bg-black text-white p-2 rounded z-50">
     Floating: {isFloating} | Visible: {isVisible} | Desktop: {isDesktop}
     <br />
     isTransitioning: {isTransitioning}
+  </div>
+
+  <!-- Detection area visualization -->
+  <div
+    bind:this={debugOverlay}
+    class="fixed inset-x-0 pointer-events-none border-y-2 border-red-500 bg-red-500/10 z-40"
+  >
+    <div class="absolute -top-6 left-4 bg-red-500 text-white px-2 py-1 rounded text-sm">
+      Detection Area
+    </div>
   </div>
 {/if}
 

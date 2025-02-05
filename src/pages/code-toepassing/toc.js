@@ -15,6 +15,14 @@ export const toc = [
         {
           title: "Meldingsplicht",
           id: "meldingsplicht"
+        },
+        {
+          title: "Relatie met het Burgerlijk Wetboek",
+          id: "relatie-met-het-burgerlijk-wetboek"
+        },
+        {
+          title: "Wettelijke verplichting",
+          id: "wettelijke-verplichting"
         }
       ]
     },
