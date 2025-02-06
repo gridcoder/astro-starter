@@ -77,6 +77,7 @@
   }
 
   function formatLink(href) {
+    if(href === "") return href = null
     return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
   }
 
@@ -146,6 +147,7 @@
             {:else}
               <li on:click={() => (isOpen = false)} class="link">
                 <a
+                  onclick={item.onclick}
                   href={formatLink(item.href)}
                   class="px-4 py-2 hover:bg-primary hover:text-base-100 rounded {setActive(
                     formatLink(item.href)
@@ -205,8 +207,9 @@
         {:else}
           <li>
             <a
+              onclick={item.onclick}
               href={formatLink(item.href)}
-              class="py-2 px-4 hover:bg-primary hover:text-base-100 rounded {setActive(
+              class="py-2 px-4 hover:bg-primary hover:text-base-100 rounded cursor-pointer {setActive(
                 formatLink(item.href)
               )}"
             >

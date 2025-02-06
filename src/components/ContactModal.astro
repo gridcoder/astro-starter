@@ -1,0 +1,60 @@
+<dialog id="contact_modal" class="modal">
+  <div class="modal-box glass backdrop-blur-md bg-base-100/40 p-4 pb-7">
+    <h2 class="text-2xl font-bold pt-2 pl-3 text-primary">Contact Nos</h2>
+    <div class="modal-action">
+      <form name="publico-feedback" action="/form-success" class="px-4 w-full bg-none" method="POST" netlify>
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="first-name"> Nomber</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="first-name"
+            type="text"
+            required
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="last-name"> Fam</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="last-name"
+            type="text"
+            required
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="email"> Email</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary invalid:border-red-500 placeholder-shown:invalid:border-transparent"
+            name="email"
+            type="email"
+            placeholder="Yena bo email"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label class="block text-primary text-sm font-bold mb-2" for="message"> Mensahe</label>
+          <textarea
+            class="input input-bordered shadow w-full h-28 py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="message"
+            required></textarea>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <button
+            class="btn btn-secondary shadow-md text-base-100 transform transition duration-300 ease-in-out hover:scale-105"
+            type="submit"
+          >
+            Manda Mensahe
+          </button>
+        </div>
+      </form>
+
+      <button
+        onclick="contact_modal.close()"
+        class="btn btn-md btn-circle btn-ghost absolute right-4 top-3 text-4xl text-primary">✕</button
+      >
+    </div>
+  </div>
+</dialog>

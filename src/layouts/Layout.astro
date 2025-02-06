@@ -5,6 +5,7 @@ import BaseHead from "@components/BaseHead.astro"
 import NavigationContainer from "@src/components/NavigationContainer.astro"
 import Footer from "@components/Footer.astro"
 import { SITE_TITLE, SITE_DESCRIPTION } from "@src/consts"
+import ContactModal from "@components/ContactModal.astro"
 
 const locale = getLocale(Astro.url)
 
@@ -33,5 +34,6 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.prop
 			<slot />
 		</main>
 		<Footer {buildDate} />
+		<ContactModal />
 	</body>
 </html>
