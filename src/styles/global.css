@@ -48,12 +48,16 @@ nav {
 	@apply font-heading;
 }
 
+button {
+	@apply btn;
+}
+
 .btn {
-	@apply text-primary;
+	@apply btn-ghost text-primary text-base font-normal rounded;
 }
 
 .btn:hover {
-	@apply bg-primary dark:bg-base-100 border-primary text-base-100;
+	@apply bg-primary dark:bg-base-100 border-base-100 dark:border-primary text-base-100 dark:text-primary transform transition duration-300 ease-in-out scale-105;
 }
 
 .btn-active {

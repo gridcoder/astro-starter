@@ -77,12 +77,13 @@
   }
 
   function formatLink(href) {
+    if(href === "") return href = null
     return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
   }
 
   function setActive(fullHref) {
     const isLinkActive = fullHref === url.pathname || fullHref === url.pathname.replace(/\/$/, "")
-    return isLinkActive ? "px-4 py-2 bg-primary text-base-100 rounded" : ""
+    return isLinkActive ? "btn-active" : ""
   }
 
   function toggleSubmenu(index, event) {
@@ -126,17 +127,16 @@
             {#if item.children && item.children.length}
               <li>
                 <details open>
-                  <summary class="px-4 py-2 hover:bg-primary hover:text-base-100 rounded"
+                  <summary class="btn text-left justify-start w-full"
                     >{translate(item.title)}</summary
                   >
-                  <ul class="flex flex-col gap-2 ml-4 p-2 text-lg">
+                  <ul class="ml-4 p-2 space-y-2 text-lg">
                     {#each item.children as subitem}
-                      <li
-                        on:click={() => (isOpen = false)}
-                        class="link px-4 py-2 hover:bg-primary hover:text-base-100 rounded"
-                      >
-                        <a href={formatLink(subitem.href)} class=" {setActive(formatLink(subitem.href))}">
-                          {subitem.title}
+                      <li>
+                        <a on:click={() => (isOpen = false)} href={formatLink(subitem.href)}>
+                          <button class="text-left justify-start w-full {setActive(formatLink(subitem.href))}">
+                            {subitem.title}
+                          </button>
                         </a>
                       </li>
                     {/each}
@@ -144,13 +144,12 @@
                 </details>
               </li>
             {:else}
-              <li on:click={() => (isOpen = false)} class="link">
-                <a
-                  href={formatLink(item.href)}
-                  class="px-4 py-2 hover:bg-primary hover:text-base-100 rounded {setActive(
-                    formatLink(item.href)
-                  )}">{translate(item.title)}</a
-                >
+              <li>
+                <a on:click={() => (isOpen = false)} href={formatLink(item.href)}>
+                  <button onclick={item.onclick} class="text-left justify-start w-full {setActive(formatLink(item.href))}">
+                    {translate(item.title)}
+                  </button>
+                </a>
               </li>
             {/if}
           {/each}
@@ -164,13 +163,10 @@
       {#each data as item, index}
         {#if item.children && item.children.length}
           <li class="relative">
-            <button
-              on:click={() => toggleSubmenu(index, event)}
-              class="flex justify-center items-center py-2 px-4 hover:bg-primary hover:text-base-100 rounded"
-            >
+            <button on:click={() => toggleSubmenu(index, event)}>
               {translate(item.title)}
               <svg
-                class="transform transition-transform duration-300 ease-in-out {openSubmenu === index
+                class="w-5 h-5 transform transition-transform duration-300 ease-in-out {openSubmenu === index
                   ? 'rotate-180'
                   : ''}"
                 width="24"
@@ -183,18 +179,15 @@
             {#if openSubmenu === index}
               <div
                 transition:slide={{ duration: 300 }}
-                class="absolute left-0 mt-2 bg-base-100 border rounded shadow-lg z-10"
+                class="absolute left-0 mt-4 bg-base-100 border rounded shadow-lg z-10"
               >
-                <ul class="p-2 w-80">
+                <ul class="p-4 space-y-2 w-80">
                   {#each item.children as subitem}
                     <li>
-                      <a
-                        href={formatLink(subitem.href)}
-                        class="block px-4 py-2 hover:bg-primary hover:text-base-100 rounded {setActive(
-                          formatLink(subitem.href)
-                        )}"
-                      >
-                        {subitem.title}
+                      <a href={formatLink(subitem.href)}>
+                        <button class="text-left justify-start w-full {setActive(formatLink(subitem.href))}">
+                          {subitem.title}
+                        </button>
                       </a>
                     </li>
                   {/each}
@@ -204,13 +197,10 @@
           </li>
         {:else}
           <li>
-            <a
-              href={formatLink(item.href)}
-              class="py-2 px-4 hover:bg-primary hover:text-base-100 rounded {setActive(
-                formatLink(item.href)
-              )}"
-            >
-              {translate(item.title)}
+            <a href={formatLink(item.href)}>
+              <button onclick={item.onclick} class="{setActive(formatLink(item.href))}">
+                {translate(item.title)}
+              </button>
             </a>
           </li>
         {/if}

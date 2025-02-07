@@ -60,7 +60,11 @@ const { frontmatter } = Astro.props
     @apply list-disc pl-4;
   }
 
+  :global(#markdown-content a:not(#toc a)) {
+    @apply link; /* Target <a> elements within #markdown-content except in child component FloatingTOC */
+  }
+
   html {
-    @apply scroll-pt-20 lg:scroll-pt-5;
+    @apply scroll-pt-44 lg:scroll-pt-5;
   }
 </style>

@@ -17,6 +17,7 @@ export const TWITTER_CREATOR: string = "@xxx";
 type Page = {
 	title: string;
 	href: string;
+	onclick?: string;
 	children?: Page[];
 };
 
@@ -87,6 +88,11 @@ export const PAGES: Page[] = [
 	// 	title: "about",
 	// 	href: "/about",
 	// },
+	{
+		title: "Contact",
+		href: "",
+		onclick: "contact_modal.showModal()",
+	}
 ];
 
 // i18n
