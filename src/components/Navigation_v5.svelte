@@ -179,7 +179,7 @@
             {#if openSubmenu === index}
               <div
                 transition:slide={{ duration: 300 }}
-                class="absolute left-0 mt-4 bg-base-100 border rounded shadow-lg z-10"
+                class="absolute left-0 mt-4 bg-base-100 border rounded shadow-lg z-20"
               >
                 <ul class="p-4 space-y-2 w-80">
                   {#each item.children as subitem}

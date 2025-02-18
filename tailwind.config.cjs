@@ -74,6 +74,7 @@ module.exports = {
 					// "primary": "#a991f7",
 					"primary": "#003f73", // Regal Blue
 					"secondary": "#3e92db", // Celestial Blue
+					"secondary-light": "#49aafe", // Picton Blue
 					"accent": "#f11f44", // Crayola Red
 					"neutral": "#94a3b8",
 					"base-100": "#fafaf9", //stone-50
