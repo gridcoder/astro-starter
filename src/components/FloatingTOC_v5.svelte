@@ -235,7 +235,7 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <!-- Original grid that stays in place -->
-<div id="toc" class="relative" bind:this={tocElement}>
+<div id="toc-static" class="toc relative" bind:this={tocElement}>
   <div class="flex flex-col gap-3">
     {#each toc as section}
       <div class="p-4 rounded bg-secondary hover:bg-primary dark:hover:bg-base-100 dark:hover:outline dark:hover:outline-1 transition-colors duration-200">
@@ -265,7 +265,7 @@
 
 <!-- Mobile floating bar -->
 {#if isVisible && !isDesktop}
-  <div id="toc" class="relative flex justify-center">
+  <div id="toc-mobile" class="toc relative flex justify-center">
     <div
       class="fixed top-[85px] 3xl:top-2 w-11/12 rounded-t lg:max-w-screen-md bg-secondary shadow-md z-10 cursor-pointer"
       class:rounded-b={!isMobileMenuOpen && !isTransitioning}
@@ -328,7 +328,7 @@
 
 <!-- Desktop floating version -->
 {#if isVisible && isDesktop}
-  <div id="toc" transition:fly={{ x: 300, duration: 500, easing: cubicOut }} class="fixed top-4 right-4 w-[300px]">
+  <div id="toc-desktop" transition:fly={{ x: 300, duration: 500, easing: cubicOut }} class="toc fixed top-4 right-4 w-[300px]">
     <div class="grid grid-cols-1 gap-1">
       {#each toc as section}
         <div

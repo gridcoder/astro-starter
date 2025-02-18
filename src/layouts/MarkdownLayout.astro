@@ -55,7 +55,7 @@ const { frontmatter } = Astro.props
   }
 
   /* Target all links except in TOC */
-  :global(#markdown-content a:not(#toc a)) {
+  :global(#markdown-content a:not(.toc a)) {
     @apply link;
   }
 

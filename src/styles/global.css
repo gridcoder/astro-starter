@@ -68,6 +68,6 @@ button {
 	@apply border-primary;
 }
 
-#toc {
+#toc-static {
 	@apply px-0 sm:px-10;
 }
