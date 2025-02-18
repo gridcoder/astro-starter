@@ -5,7 +5,7 @@
 // export const SITE_URL: string = "https://corpgov.aw";
 export const SITE_URL: string = "https://corpgov.netlify.app";
 export const SITE_TITLE: string = "Corporate Governance";
-// export const SITE_TLD: string = ".aw";
+export const SITE_TLD: string = "";
 export const SITE_DESCRIPTION: string = "Welcome to the Corporate Governance website!";
 export const LIGHT_THEME: string = "day";
 export const DARK_THEME: string = "night";
