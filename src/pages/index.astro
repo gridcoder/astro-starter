@@ -4,60 +4,98 @@ import HeroImage from "@src/components/blog/HeroImage.astro"
 ---
 
 <Layout>
-  <div class="flex flex-col md:flex-row justify-between">
-    <div class="flex flex-col justify-center">
-      <h1 class="text-6xl">Corporate Governance</h1>
-      <h2 class="text-secondary">Officiële website van het Implementatieteam corporate governance Aruba</h2>
-    </div>
-    <div class="w-full">
-      <HeroImage
-        class="mb-2 w-full"
-        src="/images/hero_image_transparent.png"
-        alt="hero image"
-        width="100%"
-        height="100%"
-      />
+  <!-- <div slot="hero-bg" class="absolute -z-10 w-full h-[60vh] overflow-hidden">
+    <div class="absolute inset-0 bg-black/30"></div>
+    <HeroImage
+      class="w-full h-full object-cover object-top"
+      src="/images/hero_background.webp"
+      alt="hero image"
+      width="100%"
+      height="100%"
+    />
+  </div> -->
+  <div
+    slot="hero-section"
+    class="w-full h-[50vh] sm:h-[40vh] flex justify-center items-center relative xl:bg-cover bg-top bg-fixed"
+    style="background-image: url(/images/hero_background.webp)"
+  >
+    <div class="absolute inset-0 bg-black/50 z-0 backdrop-blur-sm"></div>
+
+    <!-- <div class="pt-24 sm:pt-10 px-10 w-full max-w-5xl"> -->
+    <div class="px-10 w-full max-w-5xl z-10">
+      <div class="flex flex-col md:flex-row justify-between mt-16 md:mt-28">
+        <div class="flex flex-col justify-center">
+          <h1 class="text-6xl text-base-100 dark:text-primary">Corporate Governance</h1>
+          <h2 class="text-secondary-light">
+            Officiële website van het Implementatieteam Corporate Governance Aruba
+          </h2>
+        </div>
+        <!-- <div class="w-full">
+          <HeroImage
+            class="mb-2 w-full"
+            src="/images/hero_image_transparent.png"
+            alt="hero image"
+            width="100%"
+            height="100%"
+          />
+        </div> -->
+      </div>
     </div>
   </div>
 
-  <div class="py-4 sm:py-8">
-    <div class="space-y-4">
-      <h2 class="">Welkom op de corporate governance website van Aruba.</h2>
+  <div class="py-0 md:py-8">
+    <div class="">
+      <h2 class="mb-10">Welkom op de corporate governance website van Aruba.</h2>
+      <div class="flex flex-col md:flex-row">
+        <div class="w-full h-fit space-y-4">
+          <p>
+            Op deze website vindt u allerlei informatie die te maken heeft met de introductie van de
+            Landsverordening en de Code corporate governance, die naar verwachting in het eerste kwartaal van
+            2025 in werking zullen treden. Deze nieuwe governance wetgeving heeft tot doel om de corporate
+            governance binnen de rechtspersonen in de publieke- en semipublieke sector van Aruba te
+            versterken.
+          </p>
 
-      <p>
-        Op deze website vindt u allerlei informatie die te maken heeft met de introductie van de
-        Landsverordening en de Code corporate governance, die naar verwachting in het eerste kwartaal van 2025
-        in werking zullen treden. Deze nieuwe governance wetgeving heeft tot doel om de corporate governance
-        binnen de rechtspersonen in de publieke- en semipublieke sector van Aruba te versterken.
-      </p>
+          <p>
+            De Arubaanse overheid wil die entiteiten niet alleen ‘de wet voorschrijven’, maar ook een helpende
+            hand bieden. Vandaar deze website waarop belanghebbenden alles kunnen vinden wat nodig om concreet
+            aan de slag te gaan.
+          </p>
+        </div>
+        <div class="w-3/4 h-fit -mt-16">
+          <HeroImage
+            class="w-fit"
+            src="/images/hero_image_transparent.png"
+            alt="hero image"
+            width="100%"
+            height="100%"
+          />
+        </div>
+      </div>
 
-      <p>
-        De Arubaanse overheid wil die entiteiten niet alleen ‘de wet voorschrijven’, maar ook een helpende
-        hand bieden. Vandaar deze website waarop belanghebbenden alles kunnen vinden wat nodig om concreet aan
-        de slag te gaan.
-      </p>
-
-      <p class="font-semibold">Bent u bijvoorbeeld benieuwd:</p>
-      <ul class="list-disc pl-8 mb-4 space-y-2">
-        <li>hoe de nieuwe wetgeving eruit zal zien?</li>
-        <li>op welke entiteiten de nieuwe Code van toepassing is?</li>
-        <li>hoe u de Code kunt implementeren in uw organisatie?</li>
-        <li>
-          welke concrete <em class="font-italic">guidance</em> beschikbaar is in de vorm van en model profielen,
-          -reglementen en -codes?
-        </li>
-        <li>welke opleidingen en trainingen er zijn?</li>
-      </ul>
-
-      <p>Op deze website vindt u het antwoord.</p>
-
-      <p>We nodigen u van harte uit een ontdekkingsreis te maken.</p>
-
-      <p>
-        Heeft u opmerkingen of vragen, dan kunt u ons bereiken via de <a href="/contact" class="link">
-          contactpagina
-        </a>.
-      </p>
+      <div class="-mt-10 space-y-4">
+        <p class="font-semibold">Bent u bijvoorbeeld benieuwd:</p>
+        <ul class="list-disc pl-8 mb-4 space-y-2">
+          <li>hoe de nieuwe wetgeving eruit zal zien?</li>
+          <li>op welke entiteiten de nieuwe Code van toepassing is?</li>
+          <li>hoe u de Code kunt implementeren in uw organisatie?</li>
+          <li>
+            welke concrete <em class="font-italic">guidance</em> beschikbaar is in de vorm van en model profielen,
+            -reglementen en -codes?
+          </li>
+          <li>welke opleidingen en trainingen er zijn?</li>
+        </ul>
+        
+        <p>Op deze website vindt u het antwoord.</p>
+        
+        <p>We nodigen u van harte uit een ontdekkingsreis te maken.</p>
+        
+        <p>
+          Heeft u opmerkingen of vragen, dan kunt u ons bereiken via de <a href="/contact" class="link">
+            contactpagina
+          </a>.
+        </p>
+      </div>
     </div>
 
     <div class="mt-20 space-y-4">

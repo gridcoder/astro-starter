@@ -11,6 +11,11 @@
     mobile: { top: 12, bottom: 78 }      // percentages
   }
 
+  const scrollOffsets = {
+    desktop: 90,  // pixels from top in desktop mode
+    mobile: 170   // pixels from top in mobile mode
+  }
+
   let isFloating = false
   let isVisible = false
   let isMobileMenuOpen = false
@@ -64,7 +69,21 @@
   }
 
   function scrollToSection(id) {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+    const element = document.getElementById(id)
+    if (!element) return
+    
+    const offset = isDesktop ? scrollOffsets.desktop : scrollOffsets.mobile
+    const elementPosition = element.getBoundingClientRect().top
+    const offsetPosition = elementPosition + window.scrollY - offset
+    
+    // Add a check to ensure we're scrolling to a valid position
+    if (offsetPosition >= 0) {
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+    }
+    
     isMobileMenuOpen = false
   }
 
@@ -248,11 +267,11 @@
 {#if isVisible && !isDesktop}
   <div id="toc" class="relative flex justify-center">
     <div
-      class="fixed top-[85px] lg:top-2 w-11/12 rounded-t lg:max-w-screen-xs bg-secondary shadow-md z-15 cursor-pointer"
+      class="fixed top-[85px] 3xl:top-2 w-11/12 rounded-t lg:max-w-screen-md bg-secondary shadow-md z-10 cursor-pointer"
       class:rounded-b={!isMobileMenuOpen && !isTransitioning}
       transition:slide={{ duration: 300 }}
     >
-      <button class="w-full text-left text-base-100 dark:text-primary" on:click={toggleMobileMenu}>
+      <div class="w-full text-left text-base-100 dark:text-primary" on:click={toggleMobileMenu}>
         <div class="flex items-center justify-between px-5 py-3">
           <div class="flex-1 truncate flex flex-col">
             <h4 class="font-heading font-semibold">{currentSectionTitle.section}</h4>
@@ -266,7 +285,7 @@
             class="transform transition-transform duration-200 {isMobileMenuOpen ? 'rotate-180' : ''}"
           />
         </div>
-      </button>
+      </div>
 
       <!-- The menu -->
       {#if isMobileMenuOpen}
