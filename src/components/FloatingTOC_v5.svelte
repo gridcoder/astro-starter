@@ -295,7 +295,7 @@
           on:outrostart={() => (isTransitioning = true)}
           on:outroend={() => (isTransitioning = false)}
         >
-          <div class="max-h-full overflow-y-auto">
+          <div class="max-h-[80vh] overflow-y-scroll scrollbar-thin scrollbar-track-secondary scrollbar-thumb-primary">
             {#each toc as section}
               <div class="{activeSection === section.id ? 'bg-primary dark:bg-base-100 dark:border' : ''} px-5 py-2 hover:bg-primary dark:hover:bg-base-100">
                 <a href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
