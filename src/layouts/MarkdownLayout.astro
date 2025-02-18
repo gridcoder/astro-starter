@@ -10,23 +10,27 @@ const { frontmatter } = Astro.props
 <Layout title={frontmatter.title} description={frontmatter.description}>
   <HeroSection slot="hero-section" backgroundImageUrl="/images/hero_background.webp">
     <div class="flex flex-col md:flex-row justify-between mt-16 md:mt-28">
-        <h1 class="w-full text-5xl text-center text-base-100 dark:text-primary">{frontmatter.title}</h1>
+      <h1 class="w-full text-5xl text-center text-base-100 dark:text-primary">{frontmatter.title}</h1>
     </div>
   </HeroSection>
-  <article class="">
-    <div id="markdown-content" class="prose mx-auto max-w-screen-md space-y-4 px-4">
-      <slot />
-    </div>
+  <article id="markdown-content" class="prose space-y-4">
+    <slot />
   </article>
 </Layout>
 
 <style>
-  :global(#markdown-content > h2) {
-    @apply pt-20 font-semibold;
+  /* This is the first h2 element in the markdown content */
+  :global(#markdown-content > h2:first-of-type) {
+    /* @apply pt-10 font-semibold; */
   }
 
+  :global(#markdown-content > h2) {
+    @apply pt-10 font-semibold;
+  }
+
+  /* Add spacing between columns and border around the table */
   :global(#markdown-content > table) {
-    @apply my-10 mx-5 text-left outline outline-1 rounded overflow-hidden; /* Add spacing between columns and border around the table */
+    @apply my-10 mx-5 text-left outline outline-1 rounded overflow-hidden;
   }
 
   :global(#markdown-content > table thead) {
@@ -41,19 +45,21 @@ const { frontmatter } = Astro.props
     @apply border-r border-primary;
   }
 
+  /* Remove right border from the last column */
   :global(#markdown-content > table th:last-child) {
-    @apply border-r-0; /* Remove right border from the last column */
+    @apply border-r-0;
   }
 
   :global(#markdown-content > table ul) {
     @apply list-disc pl-4;
   }
 
+  /* Target all links except in TOC */
   :global(#markdown-content a:not(#toc a)) {
-    @apply link; /* Target <a> elements within #markdown-content except in child component FloatingTOC */
+    @apply link;
   }
 
   html {
-    @apply scroll-pt-44 lg:scroll-pt-5;
+    /* @apply scroll-pt-44 lg:scroll-pt-5; */
   }
 </style>

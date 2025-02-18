@@ -235,7 +235,7 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <!-- Original grid that stays in place -->
-<div id="toc" class="relative mt-10" bind:this={tocElement}>
+<div id="toc" class="relative" bind:this={tocElement}>
   <div class="flex flex-col gap-3">
     {#each toc as section}
       <div class="p-4 rounded bg-secondary hover:bg-primary dark:hover:bg-base-100 dark:hover:outline dark:hover:outline-1 transition-colors duration-200">

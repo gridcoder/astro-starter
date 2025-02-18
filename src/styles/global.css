@@ -67,3 +67,7 @@ button {
 .btn-outline {
 	@apply border-primary;
 }
+
+#toc {
+	@apply px-0 sm:px-10;
+}
