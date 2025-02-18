@@ -1,0 +1,17 @@
+---
+interface Props {
+  backgroundImageUrl: string
+}
+
+const { backgroundImageUrl } = Astro.props
+---
+
+<div
+  class="w-full h-[50vh] sm:h-[40vh] flex justify-center items-center relative xl:bg-cover bg-top bg-fixed"
+  style={`background-image: url(${backgroundImageUrl})`}
+>
+  <div class="absolute inset-0 bg-primary/50 dark:bg-base-100/50 z-0 backdrop-blur-[1px]"></div>
+  <div class="px-10 w-full max-w-5xl z-10">
+    <slot />
+  </div>
+</div>
