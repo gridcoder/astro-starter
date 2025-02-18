@@ -13,10 +13,10 @@ const url = Astro.url
 >
   <div class="">
     <a href={localizePath("/", url)} class="text-lg font-heading font-semibold"
-      ><span class="uppercase">{SITE_TITLE}</span><span class="small-caps">{SITE_TLD}</span></a
+      ><span>{SITE_TITLE}</span><span class="small-caps">{SITE_TLD}</span></a
     >
   </div>
-  <div class="sm:hidden">
+  <div class="lg:hidden">
     <ThemeSelector client:load />
   </div>
   <div class="">

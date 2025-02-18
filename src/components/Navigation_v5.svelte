@@ -8,7 +8,8 @@
 
   export let url
   export let data
-
+  
+  const desktopSize = 1024
   const translate = tFn(url)
   const t = translations(url)
   const localeUrlPrefix = getLocale(url) === DEFAULT_LOCALE ? "" : getLocale(url)
@@ -92,7 +93,7 @@
   }
 </script>
 
-<nav use:handleResize={() => (isMobile = window.innerWidth < 700)}>
+<nav use:handleResize={() => (isMobile = window.innerWidth < desktopSize)}>
   {#if isMobile}
     <!-- Mobile Navigation -->
     <button
