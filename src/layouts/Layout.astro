@@ -34,7 +34,7 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.prop
 		<main class="pt-10 px-10 w-full max-w-5xl">
 			<slot />
 		</main>
-		<Footer {buildDate} />
+		<Footer {buildDate} showSocial={false} includeTime={true} />
 		<ContactModal />
 	</body>
 </html>
