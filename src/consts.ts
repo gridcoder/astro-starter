@@ -90,8 +90,8 @@ export const PAGES: Page[] = [
 	},
 	{
 		title: "Contact",
-		href: "",
-		onclick: "contact_modal.showModal()",
+		href: "/contact",
+		// onclick: "contact_modal.showModal()",
 	}
 ];
 
