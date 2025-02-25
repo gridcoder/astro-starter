@@ -30,7 +30,7 @@ const { frontmatter } = Astro.props
 
   /* Add spacing between columns and border around the table */
   :global(#markdown-content > table) {
-    @apply my-10 mx-5 text-left outline outline-1 rounded overflow-hidden;
+    @apply my-10 sm:px-10 w-full block sm:inline-table overflow-x-auto whitespace-nowrap table-auto text-left outline outline-1 rounded min-w-full;
   }
 
   :global(#markdown-content > table thead) {
@@ -38,7 +38,7 @@ const { frontmatter } = Astro.props
   }
 
   :global(#markdown-content > table th, td) {
-    @apply p-2 border-b border-secondary/20;
+    @apply p-2 border-b border-secondary/20 whitespace-normal;
   }
 
   :global(#markdown-content > table th) {

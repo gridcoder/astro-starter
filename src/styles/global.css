@@ -20,7 +20,7 @@ html {
 }
 
 body {
-	@apply font-body bg-base-100 text-primary;
+	@apply font-body bg-base-100 text-primary break-words;
 }
 
 h1 {
