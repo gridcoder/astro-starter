@@ -329,7 +329,7 @@
 <!-- Desktop floating version -->
 {#if isVisible && isDesktop}
   <div id="toc-desktop" transition:fly={{ x: 300, duration: 500, easing: cubicOut }} class="toc fixed top-4 right-4 w-[300px]">
-    <div class="grid grid-cols-1 gap-1">
+    <div class="max-h-screen pb-8 grid grid-cols-1 gap-1 overflow-y-scroll">
       {#each toc as section}
         <div
           class="{activeSection === section.id
