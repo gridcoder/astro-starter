@@ -21,26 +21,54 @@
   // Watch for changes to isOpen and update body class
   $: isOpen ? document.body.classList.add("touch-none") : document.body.classList.remove("touch-none")
 
-  onMount(() => {
-    const handleOutsideClick = (event) => {
-      if (openSubmenu !== null && !event.target.closest(".submenu-container")) {
-        openSubmenu = null
-      }
-    }
 
-    document.addEventListener("click", handleOutsideClick)
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick)
-    }
-  })
-
-  function clickOutside(node, excludeSelector = "") {
+  /**
+   * A Svelte action that handles clicks outside of a specified element.
+   * Used for closing dropdowns, modals, or other elements when clicking outside of them.
+   * 
+   * @param {HTMLElement} node - The DOM node to watch for outside clicks
+   * @param {string|string[]} excludeSelectors - CSS selector(s) for elements to exclude from triggering the outside click
+   *                                            Can be a single selector string or an array of selectors
+   * 
+   * Usage examples:
+   * ```svelte
+   * <!-- Single selector -->
+   * <div use:clickOutside={"#button-id"}>
+   * 
+   * <!-- Data attribute selector -->
+   * <div use:clickOutside={`[data-submenu-trigger="${index}"]`}>
+   * 
+   * <!-- Multiple selectors -->
+   * <div use:clickOutside={["#button-id", ".exclude-class"]}>
+   * ```
+   * 
+   * Event handling:
+   * ```svelte
+   * <div
+   *   use:clickOutside={excludeSelector}
+   *   on:outclick={() => (isOpen = false)}
+   * >
+   * ```
+   * 
+   * The action:
+   * 1. Adds a click event listener to the document
+   * 2. When a click occurs, checks if:
+   *    - The click was outside the watched element
+   *    - The click was not on an excluded element
+   * 3. If both conditions are true, dispatches an 'outclick' custom event
+   * 4. Properly cleans up event listeners on destroy
+   * 
+   * @returns {{
+   *   destroy: () => void  // Cleanup function that removes the event listener
+   * }}
+   */
+  function clickOutside(node, excludeSelectors = []) {
     const handleClick = (event) => {
-      if (
-        !node.contains(event.target) &&
-        (excludeSelector === "" || !event.target.closest(excludeSelector))
-      ) {
+      const isExcluded = Array.isArray(excludeSelectors)
+        ? excludeSelectors.some(selector => event.target.closest(selector))
+        : event.target.closest(excludeSelectors);
+
+      if (!node.contains(event.target) && !isExcluded) {
         node.dispatchEvent(
           new CustomEvent("outclick", {
             detail: { target: event.target }
@@ -58,6 +86,7 @@
     }
   }
 
+  
   function handleResize(node, callback) {
     const handleResize = () => callback()
 
@@ -164,7 +193,10 @@
       {#each data as item, index}
         {#if item.children && item.children.length}
           <li class="relative">
-            <button on:click={() => toggleSubmenu(index, event)}>
+            <button 
+              data-submenu-trigger={index}
+              on:click={() => toggleSubmenu(index, event)}
+            >
               {translate(item.title)}
               <svg
                 class="w-5 h-5 transform transition-transform duration-300 ease-in-out {openSubmenu === index
@@ -179,6 +211,8 @@
             </button>
             {#if openSubmenu === index}
               <div
+                use:clickOutside={`[data-submenu-trigger="${index}"]`}
+                on:outclick={() => (openSubmenu = null)}
                 transition:slide={{ duration: 300 }}
                 class="absolute left-0 mt-4 bg-base-100 border rounded shadow-lg z-20"
               >
