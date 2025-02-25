@@ -142,7 +142,11 @@
 
   function formatLink(href) {
     if(href === "") return href = null
-    return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
+
+    // use this to add a trailing slash to all links
+    // return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
+    
+    return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}`
   }
 
   function setActive(fullHref) {
