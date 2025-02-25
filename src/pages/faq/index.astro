@@ -6,6 +6,6 @@ import { toc } from "./toc.js"
 ---
 
 <MarkdownLayout frontmatter={frontmatter}>
-  <FloatingTOC client:load toc={toc} />
+  <FloatingTOC slot="toc" client:load toc={toc} />
   <Content />
 </MarkdownLayout>

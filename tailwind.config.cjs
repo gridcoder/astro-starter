@@ -58,6 +58,7 @@ module.exports = {
 	},
 	plugins: [
 		require('tailwind-scrollbar'),
+		require("@tailwindcss/typography"),
 		require('daisyui'),
 		function ({ addUtilities }) {
 			const newUtilities = {

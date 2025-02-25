@@ -13,7 +13,10 @@ const { frontmatter } = Astro.props
       <h1 class="w-full text-5xl text-center text-base-100 dark:text-primary">{frontmatter.title}</h1>
     </div>
   </HeroSection>
-  <article id="markdown-content" class="prose space-y-4">
+
+  <slot name="toc"/>
+
+  <article id="markdown-content" class="space-y-4">
     <slot />
   </article>
 </Layout>
