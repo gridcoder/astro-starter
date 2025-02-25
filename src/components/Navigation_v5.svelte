@@ -64,24 +64,58 @@
    */
   function clickOutside(node, excludeSelectors = []) {
     const handleClick = (event) => {
-      const isExcluded = Array.isArray(excludeSelectors)
-        ? excludeSelectors.some(selector => event.target.closest(selector))
-        : event.target.closest(excludeSelectors);
+      try {
+        const isExcluded = Array.isArray(excludeSelectors)
+          ? excludeSelectors.some(selector => {
+              try {
+                return event.target.closest(selector);
+              } catch (e) {
+                console.warn(`Invalid selector: ${selector}`, e);
+                return false;
+              }
+            })
+          : event.target.closest(excludeSelectors);
 
-      if (!node.contains(event.target) && !isExcluded) {
-        node.dispatchEvent(
-          new CustomEvent("outclick", {
-            detail: { target: event.target }
-          })
-        )
+        if (!node.contains(event.target) && !isExcluded) {
+          node.dispatchEvent(
+            new CustomEvent("outclick", {
+              detail: { target: event.target }
+            })
+          )
+        }
+      } catch (e) {
+        console.error('Error in clickOutside handler:', e);
       }
     }
 
-    document.addEventListener("click", handleClick, true)
+    // Validate selectors before adding listener
+    if (excludeSelectors) {
+      try {
+        const selectors = Array.isArray(excludeSelectors) 
+          ? excludeSelectors 
+          : [excludeSelectors];
+        
+        selectors.forEach(selector => {
+          document.querySelector(selector);
+        });
+      } catch (e) {
+        console.error('Invalid selector provided to clickOutside:', e);
+        return {
+          destroy() {} // Return empty destroy function if setup fails
+        }
+      }
+    }
+
+    document.addEventListener("click", handleClick, { 
+      capture: true,
+      passive: true  // Improves scroll performance
+    })
 
     return {
       destroy() {
-        document.removeEventListener("click", handleClick, true)
+        document.removeEventListener("click", handleClick, { 
+          capture: true 
+        })
       }
     }
   }
