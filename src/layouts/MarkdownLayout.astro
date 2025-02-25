@@ -58,11 +58,7 @@ const { frontmatter } = Astro.props
   }
 
   /* Target all links except in TOC */
-  :global(#markdown-content a:not(.toc a)) {
-    @apply link;
-  }
-
-  html {
-    /* @apply scroll-pt-44 lg:scroll-pt-5; */
+  :global(#markdown-content a) {
+    @apply link text-secondary;
   }
 </style>
