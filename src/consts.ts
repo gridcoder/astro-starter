@@ -60,7 +60,7 @@ export const PAGES: Page[] = [
 			// },
 			{
 				title: "Opleidingen & trainingen",
-				href: "/opleidingen-trainingen",
+				href: "/opleidingen",
 			},
 			// {
 			// 	title: "Vacatures RvT/RVC/RvB/besturen",

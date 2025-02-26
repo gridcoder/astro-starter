@@ -1,0 +1,22 @@
+[
+    {
+    "name": "Endymion Academy",
+    "logo": "/images/organizations/endymion-academy-logo.png",
+    "href": "/opleidingen/endymion-academy"
+    },
+    {
+    "name": "Galan Group",
+    "logo": "/images/organizations/galan-group-logo.png",
+    "href": "/opleidingen/galan-group"
+    },
+    {
+    "name": "Grant Thornton Aruba",
+    "logo": "/images/organizations/grant-thornton-logo.png",
+    "href": "/opleidingen/grant-thornton"
+    },
+    {
+    "name": "The Themis Institute for Governance & Leadership",
+    "logo": "/images/organizations/themis-institute-logo.png",
+    "href": "/opleidingen/themis-institute"
+    }
+]

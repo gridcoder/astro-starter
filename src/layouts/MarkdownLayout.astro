@@ -14,7 +14,7 @@ const { frontmatter } = Astro.props
     </div>
   </HeroSection>
 
-  <slot name="toc"/>
+  <slot name="toc" />
 
   <article id="markdown-content" class="space-y-4">
     <slot />
@@ -57,8 +57,15 @@ const { frontmatter } = Astro.props
     @apply list-disc pl-4;
   }
 
-  /* Target all links except in TOC */
   :global(#markdown-content a) {
     @apply link text-secondary;
+  }
+
+  :global(#markdown-content ul) {
+    @apply list-disc list-outside pl-10 leading-loose;
+  }
+
+  :global(#markdown-content ul>li::marker) {
+    @apply text-secondary text-lg;
   }
 </style>
