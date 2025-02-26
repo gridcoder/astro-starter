@@ -31,10 +31,24 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.prop
 	<body class="flex flex-col items-center m-0 p-0 transition-all duration-300">
 		<NavigationContainer />
 		<slot name="hero-section" />
-		<main class="pt-10 px-10 w-full max-w-5xl">
+		<main id="main-content" class="pt-10 px-10 w-full max-w-5xl">
 			<slot />
 		</main>
 		<Footer {buildDate} showSocial={false} includeTime={true} />
 		<ContactModal />
 	</body>
 </html>
+
+<style>
+	:global(#main-content a) {
+		@apply link text-secondary;
+	}
+
+	:global(#main-content ul) {
+		@apply list-disc list-outside pl-10 leading-loose;
+	}
+
+	:global(#main-content ul > li::marker) {
+		@apply text-secondary text-lg;
+	}
+</style>
