@@ -1,11 +1,8 @@
 ---
 import MarkdownLayout from "@layouts/MarkdownLayout.astro"
 import { Content, frontmatter } from "./galan-group-content.mdx"
-import FloatingTOC from "../../components/FloatingTOC_v5.svelte"
-import { toc } from "./toc.js"
 ---
 
 <MarkdownLayout frontmatter={frontmatter}>
-  <!-- <FloatingTOC slot="toc" client:load toc={toc} /> -->
   <Content />
 </MarkdownLayout>
