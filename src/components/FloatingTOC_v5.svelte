@@ -275,8 +275,8 @@
         <div class="flex items-center justify-between px-5 py-3">
           <div class="flex-1 truncate flex flex-col">
             <h4 class="font-heading font-semibold">{currentSectionTitle.section}</h4>
-            <ul class="flex items-start" class:hidden={!currentSectionTitle.item}>
-              <span class="bullet-point-hack" />
+            <ul class="flex items-start list-none" class:hidden={!currentSectionTitle.item}>
+              <span class="bullet-point-hack mt-[11px]" />
               <li class="text-base">{currentSectionTitle.item}</li>
             </ul>
           </div>

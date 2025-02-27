@@ -53,11 +53,11 @@ button {
 }
 
 ul {
-	@apply list-disc list-outside pl-10 leading-loose [&>li::marker]:text-secondary [&>li::marker]:text-lg;
+	@apply list-disc list-outside pl-10 leading-loose marker:text-secondary marker:text-lg;
 }
 
 ol {
-	@apply list-decimal list-outside pl-10 leading-loose [&>li::marker]:text-secondary [&>li::marker]:text-lg;
+	@apply list-decimal list-outside pl-10 leading-loose marker:text-secondary marker:text-lg;
 }
 
 a {
