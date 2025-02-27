@@ -38,17 +38,3 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.prop
 		<ContactModal />
 	</body>
 </html>
-
-<style>
-	:global(#main-content a) {
-		@apply link text-secondary;
-	}
-
-	:global(#main-content ul) {
-		@apply list-disc list-outside pl-10 leading-loose;
-	}
-
-	:global(#main-content ul > li::marker) {
-		@apply text-secondary text-lg;
-	}
-</style>

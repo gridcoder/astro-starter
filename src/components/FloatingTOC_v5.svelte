@@ -245,7 +245,7 @@
         <ul class="space-y-1">
           {#each section.items as item}
             <li class="flex items-start text-base-100 dark:text-primary">
-              <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full bg-current shrink-0"></span>
+              <span class="bullet-point-hack mt-[15px]" />
               <a
                 href="#{item.id}"
                 class="{activeItem === item.id
@@ -276,7 +276,7 @@
           <div class="flex-1 truncate flex flex-col">
             <h4 class="font-heading font-semibold">{currentSectionTitle.section}</h4>
             <ul class="flex items-start" class:hidden={!currentSectionTitle.item}>
-              <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full bg-current shrink-0"></span>
+              <span class="bullet-point-hack" />
               <li class="text-base">{currentSectionTitle.item}</li>
             </ul>
           </div>
@@ -295,7 +295,7 @@
           on:outrostart={() => (isTransitioning = true)}
           on:outroend={() => (isTransitioning = false)}
         >
-          <div class="max-h-[75dvh] overflow-y-scroll scrollbar-thin scrollbar-track-secondary scrollbar-thumb-primary">
+          <div class="max-h-[75dvh] overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-primary">
             {#each toc as section}
               <div class="{activeSection === section.id ? 'bg-primary dark:bg-base-100 dark:border' : ''} px-5 py-2 hover:bg-primary dark:hover:bg-base-100">
                 <a href="#{section.id}" on:click|preventDefault={() => scrollToSection(section.id)}>
@@ -303,20 +303,22 @@
                     {section.title}
                   </h2>
                 </a>
-                <ul class="space-y-1 mt-2 text-base-100 dark:text-primary">
-                  {#each section.items as item}
-                    <li class="flex items-start">
-                      <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full shrink-0"></span>
-                      <a
-                        href="#{item.id}"
-                        class="no-underline hover:underline transition-colors duration-200 block font-normal"
-                        on:click|preventDefault={() => scrollToSection(item.id)}
-                      >
-                        {item.title}
-                      </a>
-                    </li>
-                  {/each}
-                </ul>
+                {#if section.items.length > 0}
+                  <ul class="space-y-1 mt-2 text-base-100 dark:text-primary">
+                    {#each section.items as item}
+                      <li class="flex items-start">
+                        <span class="bullet-point-hack mt-[15px]" />
+                        <a
+                          href="#{item.id}"
+                          class="no-underline hover:underline transition-colors duration-200 block font-normal text-base-100 dark:text-primary"
+                          on:click|preventDefault={() => scrollToSection(item.id)}
+                        >
+                          {item.title}
+                        </a>
+                      </li>
+                    {/each}
+                  </ul>
+                {/if}
               </div>
             {/each}
           </div>
@@ -345,22 +347,24 @@
               {section.title}
             </h2>
           </a>
-          <ul class="space-y-1 text-base-100">
-            {#each section.items as item}
-              <li class="flex items-start text-base-100 dark:text-primary">
-                <span class="inline-block w-1 h-1 mt-2 mr-3 rounded-full bg-current shrink-0"></span>
-                <a
-                  href="#{item.id}"
-                  class="{activeItem === item.id
-                    ? 'underline'
-                    : 'no-underline'} hover:underline transition-colors duration-200 block font-normal"
-                  on:click|preventDefault={() => scrollToSection(item.id)}
-                >
-                  {item.title}
-                </a>
-              </li>
-            {/each}
-          </ul>
+          {#if section.items.length > 0}
+            <ul class="space-y-1 text-base-100">
+              {#each section.items as item}
+                <li class="flex items-start text-base-100 dark:text-primary">
+                  <span class="bullet-point-hack mt-[15px]" />
+                  <a
+                    href="#{item.id}"
+                    class="{activeItem === item.id
+                      ? 'underline'
+                      : 'no-underline'} hover:underline transition-colors duration-200 block font-normal text-base-100 dark:text-primary"
+                    on:click|preventDefault={() => scrollToSection(item.id)}
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              {/each}
+            </ul>
+          {/if}
         </div>
       {/each}
     </div>
@@ -394,5 +398,13 @@
 <style>
   h2 {
     @apply text-base;
+  }
+
+  ul {
+    @apply pl-2;
+  }
+
+  .bullet-point-hack {
+    @apply inline-block w-1 h-1 mr-3 rounded-full bg-current shrink-0;
   }
 </style>

@@ -282,3 +282,9 @@
     </ul>
   {/if}
 </nav>
+
+<style>
+  ul {
+    @apply list-none;
+  }
+</style>
