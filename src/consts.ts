@@ -40,7 +40,7 @@ export const PAGES: Page[] = [
 			// },
 			{
 				title: "Op welke entiteiten is de Code van toepassing?",
-				href: "/code-toepassing",
+				href: "/toepassing",
 			},
 			// {
 			// 	title: "Implementatie van de Code",
@@ -48,7 +48,7 @@ export const PAGES: Page[] = [
 			// },
 			{
 				title: "Modellen en templates",
-				href: "/modellen-templates",
+				href: "/templates",
 			},
 			// {
 			// 	title: "Best practices en praktijkvoorbeelden",
@@ -68,7 +68,7 @@ export const PAGES: Page[] = [
 			// },
 			{
 				title: "Veel gestelde vragen",
-				href: "/faq",
+				href: "/vragen",
 			},
 			// {
 			// 	title: "Autoriteit Corporate Governance",
@@ -86,7 +86,7 @@ export const PAGES: Page[] = [
 	// },
 	{
 		title: "about",
-		href: "/about",
+		href: "/over-ons",
 	},
 	{
 		title: "Contact",
