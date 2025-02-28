@@ -20,6 +20,6 @@ const url = Astro.url
   <div class="flex flex-row-reverse md:flex-row items-center md:gap-5 ">
     <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
     </Navigation>
-    <ThemeSelector className="rotate-90" client:load />
+    <ThemeSelector className="rotate-90 md:rotate-0" client:load />
   </div>
 </div>
