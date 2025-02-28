@@ -68,22 +68,22 @@
   <div class="relative flex justify-center">
     <div
       bind:this={tabsContainer}
-      class="relative flex bg-base-200/80 rounded-full p-1 gap-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]"
+      class="relative flex bg-base-200/80 rounded-md p-1 gap-1 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]"
     >
       {#each tabs as tab, i}
         <div
           on:click={() => selectTab(i)}
           class="relative z-10 px-6 py-2 text-lg font-medium transition-all duration-300 cursor-pointer
             {activeTab === i
-              ? 'text-primary'
-              : 'text-secondary hover:text-primary/90 hover:bg-primary/10 rounded-full'}"
+              ? 'text-primary dark:text-base-100'
+              : 'text-secondary hover:text-primary/90 hover:bg-primary/10 rounded-md'}"
         >
           {tab}
         </div>
       {/each}
       <div
-        class="absolute top-1 left-0 h-[calc(100%-8px)] rounded-full transition-all duration-300 ease-out
-          bg-base-100
+        class="absolute top-1 left-0 h-[calc(100%-8px)] rounded-md transition-all duration-300 ease-out
+          bg-base-100 dark:bg-primary
           shadow-[0_2px_3px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.1)]"
         style="width: {indicatorWidth}px; transform: translateX({indicatorLeft}px)"
       />

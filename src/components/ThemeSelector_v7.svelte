@@ -31,7 +31,7 @@
       type="checkbox"
       bind:checked
       on:change={updateTheme}
-      class="toggle theme-controller bg-primary border-primary col-span-2 col-start-1 row-start-1 hover:bg-primary pointer-events-none"
+      class="toggle theme-controller rounded-md bg-primary border-primary col-span-2 col-start-1 row-start-1 hover:bg-primary pointer-events-none"
     />
     <!-- Sun -->
     <svg

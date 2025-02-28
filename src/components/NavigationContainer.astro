@@ -16,17 +16,10 @@ const url = Astro.url
       ><span>{SITE_TITLE}</span><span class="small-caps">{SITE_TLD}</span></a
     >
   </div>
-  <div class="lg:hidden p-2">
-    <ThemeSelector client:load />
-  </div>
-  <div class="">
-    <div class="flex flex-row items-center gap-5">
-      <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
-        <div class="hidden sm:flex gap-2">
-          <!-- <LanguageSelector client:load /> -->
-          <ThemeSelector client:load />
-        </div>
-      </Navigation>
-    </div>
+
+  <div class="flex flex-row-reverse md:flex-row items-center md:gap-5 ">
+    <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
+    </Navigation>
+    <ThemeSelector className="rotate-90" client:load />
   </div>
 </div>
