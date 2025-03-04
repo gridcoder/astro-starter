@@ -2,7 +2,10 @@
 import Layout from "@layouts/Layout.astro"
 import HeroImage from "@src/components/blog/HeroImage.astro"
 import HeroSection from "@src/components/HeroSection.astro"
+import VariantSelector from "@src/components/VariantSelector.svelte"
+import VariantContent from "@src/components/VariantContent.svelte"
 import AgendaCalendar from "@src/components/AgendaCalendar.svelte"
+import AgendaCalendar_v2 from "@src/components/AgendaCalendar_v2.svelte"
 ---
 
 <Layout>
@@ -19,7 +22,25 @@ import AgendaCalendar from "@src/components/AgendaCalendar.svelte"
     </div>
   </HeroSection>
 
-  <AgendaCalendar client:load mobileVisibleCount={1} desktopVisibleCount={3} />
+  <div class="mb-5 -mt-16 md:-mt-20">
+    <VariantSelector
+      client:only
+      options={[
+        { value: "v1", label: "Basic" },
+        { value: "v2", label: "Carousel" }
+      ]}
+      defaultOption="v2"
+      position="left"
+    >
+      <VariantContent client:only name="v1">
+        <AgendaCalendar client:visible mobileVisibleCount={1} desktopVisibleCount={3} />
+      </VariantContent>
+
+      <VariantContent client:only name="v2">
+        <AgendaCalendar_v2 client:visible mobileVisibleCount={1} desktopVisibleCount={3} />
+      </VariantContent>
+    </VariantSelector>
+  </div>
 
   <div class="py-0 md:py-8">
     <div class="space-y-10">
