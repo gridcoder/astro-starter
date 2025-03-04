@@ -3,9 +3,14 @@
   import { slide } from 'svelte/transition';
   import agendaData from '../data/agenda.json';
 
+  // Props for controlling visible events count
+  export let mobileVisibleCount = 1;
+  export let desktopVisibleCount = 3;
+
   let expanded = false;
   let visibleEvents = [];
   let hiddenEvents = [];
+  let isMobile = false;
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -16,17 +21,43 @@
     }).format(date);
   };
 
+  // Handle responsive behavior
+  function handleResize() {
+    isMobile = window.innerWidth < 768; // md breakpoint in Tailwind
+    updateVisibleEvents();
+  }
+
+  function updateVisibleEvents() {
+    if (!agendaData?.length) return;
+    
+    // Use appropriate count based on screen size
+    const visibleCount = isMobile ? mobileVisibleCount : desktopVisibleCount;
+    
+    // Split into visible and hidden events
+    visibleEvents = sortedFutureEvents.slice(0, visibleCount);
+    hiddenEvents = sortedFutureEvents.slice(visibleCount);
+  }
+
+  let sortedFutureEvents = [];
+
   onMount(() => {
+    // Add window resize listener
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+    
     // Sort events by date
     const sortedEvents = [...agendaData].sort((a, b) => new Date(a.date) - new Date(b.date));
     
     // Only show future events
     const currentDate = new Date();
-    const futureEvents = sortedEvents.filter(event => new Date(event.date) >= currentDate);
+    sortedFutureEvents = sortedEvents.filter(event => new Date(event.date) >= currentDate);
     
-    // Split into visible and hidden events
-    visibleEvents = futureEvents.slice(0, 3);
-    hiddenEvents = futureEvents.slice(3);
+    // Update visible events based on screen size
+    updateVisibleEvents();
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   });
 
   function toggleExpanded() {
