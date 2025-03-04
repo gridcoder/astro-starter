@@ -1,0 +1,66 @@
+[
+  {
+    "date": "2025-04-02",
+    "location": "Sint Maarten",
+    "events": [
+      {
+        "time": "8:00-10:00",
+        "title": "Board Program",
+        "description": "Board Program Sint Maarten"
+      },
+      {
+        "time": "10:00-18:00",
+        "title": "PE/PO Program",
+        "description": "PE/PO Program Sint Maarten"
+      }
+    ]
+  },
+  {
+    "date": "2025-04-07",
+    "location": "Aruba",
+    "events": [
+      {
+        "time": "8:00-10:00",
+        "title": "Board Program",
+        "description": "Board Program Aruba"
+      },
+      {
+        "time": "10:00-18:00",
+        "title": "PE/PO Program",
+        "description": "PE/PO Program Aruba"
+      }
+    ]
+  },
+  {
+    "date": "2025-04-02",
+    "location": "Curacao",
+    "events": [
+      {
+        "time": "8:00-10:00",
+        "title": "Board Program",
+        "description": "Board Program Curacao"
+      },
+      {
+        "time": "10:00-18:00",
+        "title": "PE/PO Program",
+        "description": "PE/PO Program Curacao"
+      }
+    ]
+  },
+  {
+    "date": "2025-05-15",
+    "location": "Curacao",
+    "events": [
+      {
+        "time": "8:00-10:00",
+        "title": "Board Program",
+        "description": "Board Program Curacao"
+      },
+      {
+        "time": "10:00-18:00",
+        "title": "PE/PO Program",
+        "description": "PE/PO Program Curacao"
+      }
+    ]
+  }
+]

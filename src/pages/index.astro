@@ -2,6 +2,7 @@
 import Layout from "@layouts/Layout.astro"
 import HeroImage from "@src/components/blog/HeroImage.astro"
 import HeroSection from "@src/components/HeroSection.astro"
+import AgendaCalendar from "@src/components/AgendaCalendar.svelte"
 ---
 
 <Layout>
@@ -17,6 +18,8 @@ import HeroSection from "@src/components/HeroSection.astro"
       </div>
     </div>
   </HeroSection>
+
+  <AgendaCalendar client:load />
 
   <div class="py-0 md:py-8">
     <div class="space-y-10">
