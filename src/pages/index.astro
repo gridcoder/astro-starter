@@ -6,6 +6,7 @@ import VariantSelector from "@src/components/VariantSelector.svelte"
 import VariantContent from "@src/components/VariantContent.svelte"
 import AgendaCalendar from "@src/components/AgendaCalendar.svelte"
 import AgendaCalendar_v2 from "@src/components/AgendaCalendar_v2.svelte"
+import AgendaCalendar_v3 from "@src/components/AgendaCalendar_v3.svelte"
 ---
 
 <Layout>
@@ -27,9 +28,10 @@ import AgendaCalendar_v2 from "@src/components/AgendaCalendar_v2.svelte"
       client:only
       options={[
         { value: "v1", label: "Basic" },
-        { value: "v2", label: "Carousel" }
+        { value: "v2", label: "Carousel" },
+        { value: "v3", label: "Slider" }
       ]}
-      defaultOption="v2"
+      defaultOption="v3"
       position="left"
     >
       <VariantContent client:only name="v1">
@@ -38,6 +40,10 @@ import AgendaCalendar_v2 from "@src/components/AgendaCalendar_v2.svelte"
 
       <VariantContent client:only name="v2">
         <AgendaCalendar_v2 client:visible mobileVisibleCount={1} desktopVisibleCount={3} />
+      </VariantContent>
+      
+      <VariantContent client:only name="v3">
+        <AgendaCalendar_v3 client:visible mobileVisibleCount={1} desktopVisibleCount={3} />
       </VariantContent>
     </VariantSelector>
   </div>
