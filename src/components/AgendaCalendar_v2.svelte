@@ -75,23 +75,37 @@
   <div class="card bg-base-100 shadow-lg rounded-lg">
     <h2 class="pt-4 text-lg md:text-xl text-center">Aankomende Trainingen</h2>
     <div class="card-body p-0 pb-2 md:p-4">
-      <!-- Carousel view -->
-      {#if sortedFutureEvents.length > 0 && !expanded}
+      <!-- Always show the carousel/initial items, regardless of expanded state -->
+      {#if sortedFutureEvents.length > 0}
         <div class="relative">
-          <!-- Previous button -->
-          <button
-            on:click={prevSlide}
-            class="absolute top-1/2 left-0 -translate-y-1/2 -ml-4 z-10 btn btn-circle btn-sm bg-base-100 shadow-md hover:bg-secondary hover:text-base-100"
-            aria-label="Previous slide"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+          <!-- Only show navigation buttons when not expanded -->
+          {#if !expanded}
+            <!-- Previous button -->
+            <button
+              on:click={prevSlide}
+              class="absolute top-1/2 left-0 -translate-y-1/2 -ml-4 z-10 btn btn-circle btn-sm bg-base-100 shadow-md hover:bg-secondary hover:text-base-100"
+              aria-label="Previous slide"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-          <!-- Slides container -->
+            <!-- Next button -->
+            <button
+              on:click={nextSlide}
+              class="absolute top-1/2 right-0 -translate-y-1/2 -mr-4 z-10 btn btn-circle btn-sm bg-base-100 shadow-md hover:bg-secondary hover:text-base-100"
+              aria-label="Next slide"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          {/if}
+
+          <!-- Slides container - always visible -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
-            {#each visibleSlides as event, i (event.date + event.location)}
+            {#each expanded ? sortedFutureEvents.slice(0, isMobile ? mobileVisibleCount : desktopVisibleCount) : visibleSlides as event, i (event.date + event.location)}
               <div 
                 in:fade={{ duration: 200, delay: i * 100 }}
                 class="flex flex-col h-fit bg-primary/5 rounded-lg p-4 hover:shadow-md transition-all"
@@ -109,39 +123,17 @@
               </div>
             {/each}
           </div>
-
-          <!-- Next button -->
-          <button
-            on:click={nextSlide}
-            class="absolute top-1/2 right-0 -translate-y-1/2 -mr-4 z-10 btn btn-circle btn-sm bg-base-100 shadow-md hover:bg-secondary hover:text-base-100"
-            aria-label="Next slide"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
         </div>
-
-        <!-- Dots indicator -->
-        <!-- <div class="flex justify-center mt-4 space-x-2">
-          {#each Array(Math.ceil(sortedFutureEvents.length / (isMobile ? mobileVisibleCount : desktopVisibleCount))) as _, i}
-            <button 
-              class="w-2 h-2 rounded-full transition-all {currentIndex === i * (isMobile ? mobileVisibleCount : desktopVisibleCount) ? 'bg-secondary scale-125' : 'bg-gray-300'}"
-              on:click={() => currentIndex = i * (isMobile ? mobileVisibleCount : desktopVisibleCount)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          {/each}
-        </div> -->
-      {:else if sortedFutureEvents.length === 0}
+      {:else}
         <div class="text-center py-6">
           <p class="text-neutral">Geen aankomende trainingen gevonden</p>
         </div>
       {/if}
       
-      <!-- Expanded view showing all events -->
-      {#if expanded}
-        <div transition:slide={{ duration: 300 }} class="grid grid-cols-1 md:grid-cols-3 px-4 gap-4">
-          {#each sortedFutureEvents as event}
+      <!-- Expanded view showing additional events -->
+      {#if expanded && sortedFutureEvents.length > (isMobile ? mobileVisibleCount : desktopVisibleCount)}
+        <div transition:slide={{ duration: 300 }} class="mt-6 grid grid-cols-1 md:grid-cols-3 px-4 gap-4">
+          {#each sortedFutureEvents.slice(isMobile ? mobileVisibleCount : desktopVisibleCount) as event}
             <div class="flex flex-col h-fit bg-primary/5 rounded-lg p-4 hover:shadow-md transition-all">
               <div class="flex flex-wrap items-center gap-1 mb-2">
                 <span class="text-secondary font-semibold">{formatDate(event.date)}</span>
