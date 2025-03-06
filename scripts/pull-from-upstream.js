@@ -128,36 +128,12 @@ function pullFromUpstream() {
   }
 }
 
-function createBackup() {
-  const backupBranchName = 'backup-dev';
-  console.log(`Creating backup of dev branch as '${backupBranchName}'...`);
-  
-  try {
-    const branches = executeCommand('git branch');
-    if (branches.includes(backupBranchName)) {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const newBackupName = `${backupBranchName}-${timestamp}`;
-      executeCommand(`git branch ${newBackupName} dev`);
-      console.log(`Created backup branch: ${newBackupName}`);
-    } else {
-      executeCommand(`git branch ${backupBranchName} dev`);
-      console.log(`Created backup branch: ${backupBranchName}`);
-    }
-  } catch (error) {
-    console.error('Error creating backup:', error.message);
-    process.exit(1);
-  }
-}
-
 async function main() {
   try {
     // Step 1: Verify repo is clean
     checkIfClean();
     
-    // Create backup of dev branch
-    createBackup();
-    
-    // Step 2: Create temporary branch
+    // Step 2: Create temporary branch (removed backup step)
     const branchName = await createBranch('pull-from-upstream');
     
     // Step 3: Pull from upstream
