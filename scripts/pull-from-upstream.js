@@ -10,9 +10,14 @@ function executeCommand(command) {
   try {
     return execSync(command, { encoding: 'utf8' });
   } catch (error) {
-    console.error(`Error executing command: ${command}`);
-    console.error(error.message);
-    process.exit(1);
+    // Only throw for other commands, special handling for git pull in pullFromUpstream
+    if (!command.startsWith('git pull')) {
+      console.error(`Error executing command: ${command}`);
+      console.error(error.message);
+      process.exit(1);
+    }
+    // Return the error for git pull to handle in the calling function
+    return { error: error, stderr: error.stderr, stdout: error.stdout };
   }
 }
 
@@ -83,13 +88,26 @@ function promptForNewBranchName(existingBranch) {
 
 function pullFromUpstream() {
   console.log('Pulling changes from upstream/main...');
-  try {
-    executeCommand('git pull upstream main');
+  
+  const result = executeCommand('git pull upstream main');
+  
+  // Check if result contains an error object
+  if (result && result.error) {
+    const stderr = result.stderr?.toString() || '';
+    
+    // Check if it's a merge conflict
+    if (stderr.includes('CONFLICT') || stderr.includes('Automatic merge failed')) {
+      console.log('Merge conflicts detected. Please resolve conflicts in VS Code, then commit the changes.');
+      console.log('After resolving conflicts, you can continue with the push-to-upstream script.');
+      process.exit(1);
+    } else {
+      // If it's not a merge conflict but some other error
+      console.error('Error pulling from upstream:');
+      console.error(stderr);
+      process.exit(1);
+    }
+  } else {
     console.log('Successfully pulled changes from upstream.');
-  } catch (error) {
-    console.log('Merge conflicts detected. Please resolve conflicts in VS Code, then commit the changes.');
-    console.log('After resolving conflicts, you can continue with the push-to-upstream script.');
-    process.exit(1);
   }
 }
 
