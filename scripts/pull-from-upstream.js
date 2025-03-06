@@ -90,13 +90,6 @@ function pullFromUpstream() {
     stdio: ['ignore', 'pipe', 'pipe']
   });
   
-  // Log the raw output for debugging
-  console.log('Git stdout:', gitProcess.stdout);
-  
-  if (gitProcess.stderr) {
-    console.log('Git stderr:', gitProcess.stderr);
-  }
-  
   // Check if there was an actual error based on exit code
   if (gitProcess.status === 0) {
     // Exit code 0 means success in Git
@@ -105,14 +98,30 @@ function pullFromUpstream() {
     // Non-zero exit code is an actual error
     
     // Check for merge conflicts
-    if (gitProcess.stderr.includes('CONFLICT') || 
-        gitProcess.stderr.includes('Automatic merge failed') ||
-        gitProcess.stdout.includes('CONFLICT') ||
-        gitProcess.stdout.includes('Automatic merge failed')) {
-      console.log('Merge conflicts detected. Please resolve conflicts in VS Code, then commit the changes.');
+    if (gitProcess.stderr?.includes('CONFLICT') || 
+        gitProcess.stderr?.includes('Automatic merge failed') ||
+        gitProcess.stdout?.includes('CONFLICT') ||
+        gitProcess.stdout?.includes('Automatic merge failed')) {
+      
+      // Show the files with conflicts
+      const conflictFiles = gitProcess.stdout
+        .split('\n')
+        .filter(line => line.includes('CONFLICT'))
+        .map(line => {
+          const match = line.match(/CONFLICT \(\w+\): Merge conflict in (.+)/);
+          return match ? match[1] : null;
+        })
+        .filter(Boolean);
+      
+      console.log('\nMerge conflicts detected in the following files:');
+      conflictFiles.forEach(file => console.log(`- ${file}`));
+      console.log('\nPlease resolve conflicts in VS Code, then commit the changes.');
       console.log('After resolving conflicts, you can continue with the push-to-upstream script.');
     } else {
       console.error('Error pulling from upstream. Exit code:', gitProcess.status);
+      if (gitProcess.stderr) {
+        console.error(gitProcess.stderr);
+      }
     }
     
     process.exit(1);
