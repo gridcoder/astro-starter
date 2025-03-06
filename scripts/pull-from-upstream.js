@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execSync, spawnSync } from 'child_process';
 import readline from 'readline';
 
 const rl = readline.createInterface({
@@ -84,37 +84,38 @@ function promptForNewBranchName(existingBranch) {
 function pullFromUpstream() {
   console.log('Pulling changes from upstream/main...');
   
-  try {
-    // Try direct execution first
-    const output = execSync('git pull upstream main', { encoding: 'utf8', stdio: 'pipe' });
+  // Use spawnSync for better control over output
+  const gitProcess = spawnSync('git', ['pull', 'upstream', 'main'], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+  
+  // Log the raw output for debugging
+  console.log('Git stdout:', gitProcess.stdout);
+  
+  if (gitProcess.stderr) {
+    console.log('Git stderr:', gitProcess.stderr);
+  }
+  
+  // Check if there was an actual error based on exit code
+  if (gitProcess.status === 0) {
+    // Exit code 0 means success in Git
     console.log('Successfully pulled changes from upstream.');
-    return;
-  } catch (error) {
-    // Check if it's a merge conflict
-    if (error.stderr && (error.stderr.includes('CONFLICT') || error.stderr.includes('Automatic merge failed'))) {
+  } else {
+    // Non-zero exit code is an actual error
+    
+    // Check for merge conflicts
+    if (gitProcess.stderr.includes('CONFLICT') || 
+        gitProcess.stderr.includes('Automatic merge failed') ||
+        gitProcess.stdout.includes('CONFLICT') ||
+        gitProcess.stdout.includes('Automatic merge failed')) {
       console.log('Merge conflicts detected. Please resolve conflicts in VS Code, then commit the changes.');
       console.log('After resolving conflicts, you can continue with the push-to-upstream script.');
-      process.exit(1);
-    }
-    
-    // Check if it's actually an error or just informational output
-    // Git often outputs to stderr for informational purposes
-    const errorOutput = error.stderr?.toString() || '';
-    const stdOutput = error.stdout?.toString() || '';
-    
-    // Known patterns in git output that indicate success despite using stderr
-    const isActualError = errorOutput.includes('fatal:') || 
-                          errorOutput.includes('error:') ||
-                          error.status !== 0;
-    
-    if (isActualError) {
-      console.error('Error pulling from upstream:');
-      console.error(errorOutput);
-      process.exit(1);
     } else {
-      // It wasn't a real error, just git being verbose
-      console.log('Successfully pulled changes from upstream.');
+      console.error('Error pulling from upstream. Exit code:', gitProcess.status);
     }
+    
+    process.exit(1);
   }
 }
 
