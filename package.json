@@ -21,7 +21,9 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"pwa:generate-assets": "pwa-assets-generator --preset minimal public/logo.svg",
-		"convert-to-mdx": "node scripts/convert-to-mdx.js"
+		"convert-to-mdx": "node scripts/convert-to-mdx.js",
+		"pull-from-upstream": "node scripts/pull-from-upstream.js",
+		"push-to-upstream": "node scripts/push-to-upstream.js"
 	},
 	"dependencies": {
 		"@astrojs/alpinejs": "^0.4.0",
