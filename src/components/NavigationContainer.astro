@@ -3,23 +3,23 @@ import Navigation from "@src/components/Navigation_v5.svelte"
 import ThemeSelector from "@components/ThemeSelector_v7.svelte"
 import LanguageSelector from "@components/LanguageSelector_v3.svelte"
 import { localizePath } from "@utils/t"
-import { SITE_TITLE, PAGES } from "@src/consts"
+import { SITE_TITLE, SITE_TLD, PAGES } from "@src/consts"
 
 const url = Astro.url
 ---
 
-<div class="max-w-screen-lg fixed z-20 flex items-center justify-between shadow w-full px-4 py-2 bg-base-100">
+<div
+  class="max-w-screen-lg fixed top-3 z-20 flex items-center justify-between w-11/12 xl:w-full p-2 md:px-4 md:py-2 bg-base-100 text-primary shadow-md rounded border border-secondary dark:bg-base-100 dark:text-primary dark:border"
+>
   <div class="">
-    <a href={localizePath("/", url)} class="text-lg font-semibold small-caps">{SITE_TITLE}</a>
+    <a href={localizePath("/", url)} class="link link-hover text-primary text-lg font-heading font-semibold"
+      ><span>{SITE_TITLE}</span><span class="small-caps">{SITE_TLD}</span></a
+    >
   </div>
-  <ThemeSelector client:load />
-  <div class="">
-    <div class="flex flex-row items-center gap-5">
-      <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
-        <div class="flex gap-2">
-          <LanguageSelector client:load />
-        </div>
-      </Navigation>
-    </div>
+
+  <div class="flex flex-row-reverse md:flex-row items-center md:gap-5 ">
+    <Navigation client:only="svelte" url={Astro.url} data={PAGES}>
+    </Navigation>
+    <ThemeSelector className="rotate-90 md:rotate-0" client:load />
   </div>
 </div>
