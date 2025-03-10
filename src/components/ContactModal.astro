@@ -1,0 +1,86 @@
+<dialog id="contact_modal" class="modal">
+  <div class="modal-box glass backdrop-blur-md bg-base-100/40 p-4 pb-7">
+    <div class="p-1 flex justify-between items-start">
+      <div>
+        <h2 class="text-2xl font-bold pt-2 pl-3 text-primary uppercase">Contact</h2>
+        <h3 class="text-xl font-normal pt-2 pl-3 text-primary">
+          Neem hieronder contact op met het Implementatieteam Corporate Governance
+        </h3>
+      </div>
+      <button
+        onclick="contact_modal.close()"
+        class="px-2 pb-1 text-4xl text-primary hover:bg-primary hover:text-base-100 rounded">✕</button
+      >
+    </div>
+    <div class="modal-action">
+      <form
+        name="corpgov-contact-form"
+        action="/form-success"
+        class="px-4 w-full bg-none"
+        method="POST"
+        netlify
+      >
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="first-name"> Voornaam</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="first-name"
+            type="text"
+            required
+            autofocus
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="last-name"> Achternaam</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="last-name"
+            type="text"
+            required
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="organisation"> Organisatie</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="organisation"
+            type="text"
+            required
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-primary text-sm font-bold mb-2" for="email"> Email</label>
+          <input
+            class="input input-bordered shadow w-full py-2 px-3 text-primary leading-tight focus:input-secondary invalid:border-red-500 placeholder-shown:invalid:border-transparent"
+            name="email"
+            type="email"
+            placeholder=" "
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label class="block text-primary text-sm font-bold mb-2" for="message"> Bericht</label>
+          <textarea
+            class="input input-bordered shadow w-full h-28 py-2 px-3 text-primary leading-tight focus:input-secondary"
+            name="message"
+            required></textarea>
+        </div>
+
+        <div class="flex items-center justify-end">
+          <button class="!btn btn-secondary !text-base-100 dark:!text-primary shadow-md" type="submit">
+            Verzenden
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    contact_modal.showModal()
+  })
+</script> -->

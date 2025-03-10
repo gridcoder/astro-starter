@@ -8,7 +8,8 @@
 
   export let url
   export let data
-
+  
+  const desktopSize = 1024
   const translate = tFn(url)
   const t = translations(url)
   const localeUrlPrefix = getLocale(url) === DEFAULT_LOCALE ? "" : getLocale(url)
@@ -20,43 +21,106 @@
   // Watch for changes to isOpen and update body class
   $: isOpen ? document.body.classList.add("touch-none") : document.body.classList.remove("touch-none")
 
-  onMount(() => {
-    const handleOutsideClick = (event) => {
-      if (openSubmenu !== null && !event.target.closest(".submenu-container")) {
-        openSubmenu = null
-      }
-    }
 
-    document.addEventListener("click", handleOutsideClick)
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick)
-    }
-  })
-
-  function clickOutside(node, excludeSelector = "") {
+  /**
+   * A Svelte action that handles clicks outside of a specified element.
+   * Used for closing dropdowns, modals, or other elements when clicking outside of them.
+   * 
+   * @param {HTMLElement} node - The DOM node to watch for outside clicks
+   * @param {string|string[]} excludeSelectors - CSS selector(s) for elements to exclude from triggering the outside click
+   *                                            Can be a single selector string or an array of selectors
+   * 
+   * Usage examples:
+   * ```svelte
+   * <!-- Single selector -->
+   * <div use:clickOutside={"#button-id"}>
+   * 
+   * <!-- Data attribute selector -->
+   * <div use:clickOutside={`[data-submenu-trigger="${index}"]`}>
+   * 
+   * <!-- Multiple selectors -->
+   * <div use:clickOutside={["#button-id", ".exclude-class"]}>
+   * ```
+   * 
+   * Event handling:
+   * ```svelte
+   * <div
+   *   use:clickOutside={excludeSelector}
+   *   on:outclick={() => (isOpen = false)}
+   * >
+   * ```
+   * 
+   * The action:
+   * 1. Adds a click event listener to the document
+   * 2. When a click occurs, checks if:
+   *    - The click was outside the watched element
+   *    - The click was not on an excluded element
+   * 3. If both conditions are true, dispatches an 'outclick' custom event
+   * 4. Properly cleans up event listeners on destroy
+   * 
+   * @returns {{
+   *   destroy: () => void  // Cleanup function that removes the event listener
+   * }}
+   */
+  function clickOutside(node, excludeSelectors = []) {
     const handleClick = (event) => {
-      if (
-        !node.contains(event.target) &&
-        (excludeSelector === "" || !event.target.closest(excludeSelector))
-      ) {
-        node.dispatchEvent(
-          new CustomEvent("outclick", {
-            detail: { target: event.target }
-          })
-        )
+      try {
+        const isExcluded = Array.isArray(excludeSelectors)
+          ? excludeSelectors.some(selector => {
+              try {
+                return event.target.closest(selector);
+              } catch (e) {
+                console.warn(`Invalid selector: ${selector}`, e);
+                return false;
+              }
+            })
+          : event.target.closest(excludeSelectors);
+
+        if (!node.contains(event.target) && !isExcluded) {
+          node.dispatchEvent(
+            new CustomEvent("outclick", {
+              detail: { target: event.target }
+            })
+          )
+        }
+      } catch (e) {
+        console.error('Error in clickOutside handler:', e);
       }
     }
 
-    document.addEventListener("click", handleClick, true)
+    // Validate selectors before adding listener
+    if (excludeSelectors) {
+      try {
+        const selectors = Array.isArray(excludeSelectors) 
+          ? excludeSelectors 
+          : [excludeSelectors];
+        
+        selectors.forEach(selector => {
+          document.querySelector(selector);
+        });
+      } catch (e) {
+        console.error('Invalid selector provided to clickOutside:', e);
+        return {
+          destroy() {} // Return empty destroy function if setup fails
+        }
+      }
+    }
+
+    document.addEventListener("click", handleClick, { 
+      capture: true,
+      passive: true  // Improves scroll performance
+    })
 
     return {
       destroy() {
-        document.removeEventListener("click", handleClick, true)
+        document.removeEventListener("click", handleClick, { 
+          capture: true 
+        })
       }
     }
   }
 
+  
   function handleResize(node, callback) {
     const handleResize = () => callback()
 
@@ -77,12 +141,17 @@
   }
 
   function formatLink(href) {
-    return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
+    if(href === "") return href = null
+
+    // use this to add a trailing slash to all links
+    // return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}${href.endsWith("/") ? "" : "/"}`
+    
+    return `${localeUrlPrefix ? "/" : ""}${localeUrlPrefix}${href}`
   }
 
   function setActive(fullHref) {
     const isLinkActive = fullHref === url.pathname || fullHref === url.pathname.replace(/\/$/, "")
-    return isLinkActive ? "px-4 py-2 bg-primary text-base-100 rounded" : ""
+    return isLinkActive ? "btn-active" : ""
   }
 
   function toggleSubmenu(index, event) {
@@ -91,7 +160,7 @@
   }
 </script>
 
-<nav use:handleResize={() => (isMobile = window.innerWidth < 700)}>
+<nav use:handleResize={() => (isMobile = window.innerWidth < desktopSize)}>
   {#if isMobile}
     <!-- Mobile Navigation -->
     <button
@@ -126,17 +195,16 @@
             {#if item.children && item.children.length}
               <li>
                 <details open>
-                  <summary class="px-4 py-2 hover:bg-primary hover:text-base-100 rounded"
+                  <summary class="btn text-left justify-start w-full"
                     >{translate(item.title)}</summary
                   >
-                  <ul class="flex flex-col gap-2 ml-4 p-2 text-lg">
+                  <ul class="ml-4 p-2 space-y-2 text-lg">
                     {#each item.children as subitem}
-                      <li
-                        on:click={() => (isOpen = false)}
-                        class="link px-4 py-2 hover:bg-primary hover:text-base-100 rounded"
-                      >
-                        <a href={formatLink(subitem.href)} class=" {setActive(formatLink(subitem.href))}">
-                          {subitem.title}
+                      <li>
+                        <a on:click={() => (isOpen = false)} href={formatLink(subitem.href)}>
+                          <button class="text-left justify-start w-full {setActive(formatLink(subitem.href))}">
+                            {subitem.title}
+                          </button>
                         </a>
                       </li>
                     {/each}
@@ -144,13 +212,12 @@
                 </details>
               </li>
             {:else}
-              <li on:click={() => (isOpen = false)} class="link">
-                <a
-                  href={formatLink(item.href)}
-                  class="px-4 py-2 hover:bg-primary hover:text-base-100 rounded {setActive(
-                    formatLink(item.href)
-                  )}">{translate(item.title)}</a
-                >
+              <li>
+                <a on:click={() => (isOpen = false)} href={formatLink(item.href)}>
+                  <button onclick={item.onclick} class="text-left justify-start w-full {setActive(formatLink(item.href))}">
+                    {translate(item.title)}
+                  </button>
+                </a>
               </li>
             {/if}
           {/each}
@@ -164,13 +231,13 @@
       {#each data as item, index}
         {#if item.children && item.children.length}
           <li class="relative">
-            <button
+            <button 
+              data-submenu-trigger={index}
               on:click={() => toggleSubmenu(index, event)}
-              class="flex justify-center items-center py-2 px-4 hover:bg-primary hover:text-base-100 rounded"
             >
               {translate(item.title)}
               <svg
-                class="transform transition-transform duration-300 ease-in-out {openSubmenu === index
+                class="w-5 h-5 transform transition-transform duration-300 ease-in-out {openSubmenu === index
                   ? 'rotate-180'
                   : ''}"
                 width="24"
@@ -182,19 +249,18 @@
             </button>
             {#if openSubmenu === index}
               <div
+                use:clickOutside={`[data-submenu-trigger="${index}"]`}
+                on:outclick={() => (openSubmenu = null)}
                 transition:slide={{ duration: 300 }}
-                class="absolute left-0 mt-2 bg-base-100 border rounded shadow-lg z-10"
+                class="absolute left-0 mt-4 bg-base-100 border rounded shadow-lg z-20"
               >
-                <ul class="p-2 w-80">
+                <ul class="p-4 space-y-2 w-80">
                   {#each item.children as subitem}
                     <li>
-                      <a
-                        href={formatLink(subitem.href)}
-                        class="block px-4 py-2 hover:bg-primary hover:text-base-100 rounded {setActive(
-                          formatLink(subitem.href)
-                        )}"
-                      >
-                        {subitem.title}
+                      <a href={formatLink(subitem.href)}>
+                        <button class="text-left justify-start w-full {setActive(formatLink(subitem.href))}">
+                          {subitem.title}
+                        </button>
                       </a>
                     </li>
                   {/each}
@@ -204,13 +270,10 @@
           </li>
         {:else}
           <li>
-            <a
-              href={formatLink(item.href)}
-              class="py-2 px-4 hover:bg-primary hover:text-base-100 rounded {setActive(
-                formatLink(item.href)
-              )}"
-            >
-              {translate(item.title)}
+            <a href={formatLink(item.href)}>
+              <button onclick={item.onclick} class="{setActive(formatLink(item.href))}">
+                {translate(item.title)}
+              </button>
             </a>
           </li>
         {/if}
@@ -219,3 +282,9 @@
     </ul>
   {/if}
 </nav>
+
+<style>
+  ul {
+    @apply list-none;
+  }
+</style>
